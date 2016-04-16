@@ -20,38 +20,14 @@ public class CellDisplay extends Group {
         blipGroup.setX(10);
         blipGroup.setY(10);
 
-        this.addActor(blipGroup);
-        rcBlips = new EnergyBlip[4][3];
-        for (int blipRow = 0; blipRow < 3; blipRow++) {
-            for(int blipCol = 0; blipCol < 3; blipCol++) {
-                rcBlips[blipRow][blipCol] = new EnergyBlip();
-                rcBlips[blipRow][blipCol].setVisible(false);
-                rcBlips[blipRow][blipCol].setWidth(10);
-                rcBlips[blipRow][blipCol].setHeight(10);
-                rcBlips[blipRow][blipCol].setX(blipCol * 10);
-                rcBlips[blipRow][blipCol].setY(blipRow * 10);
-
-                blipGroup.addActor(rcBlips[blipRow][blipCol]);
-            }
-        }
+        this.addActor(new BlipMeter(3, 3, this::getEnergyInCell));
     }
 
-    @Override
-    public void draw(Batch batch, float delta) {
-        int drawnEnergy = 0;
-        for (int blipRow = 0; blipRow < 3; blipRow++) {
-            for(int blipCol = 0; blipCol < 3; blipCol++) {
-                if (cell.getContent() == null) {
-                    rcBlips[blipRow][blipCol].setVisible(false);
-                } else if (drawnEnergy < cell.getContent().getEnergy()) {
-                    rcBlips[blipRow][blipCol].setVisible(true);
-                    drawnEnergy++;
-                } else {
-                    rcBlips[blipRow][blipCol].setVisible(false);
-                }
-            }
+    private int getEnergyInCell() {
+        if (cell.getContent() == null) {
+            return 0;
+        } else {
+            return cell.getContent().getEnergy();
         }
-
-        super.draw(batch, delta);
     }
 }
