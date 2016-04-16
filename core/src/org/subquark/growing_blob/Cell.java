@@ -6,6 +6,11 @@ public class Cell {
     private int row;
     private int col;
 
+    private Runnable energyTransferTowardsRightObserver;
+    private Runnable energyTransferTowardsLeftObserver;
+    private Runnable energyTransferTowardsDownObserver;
+    private Runnable energyTransferTowardsUpObserver;
+
     public void setCellContent(CellContent newContent) {
         if (this.cellContent != null) {
             this.cellContent.setCell(null);
@@ -42,4 +47,39 @@ public class Cell {
     public void setWorld(World world) {
         this.world = world;
     }
+
+    public void onEnergyTransferredTowardsRight(Runnable observer) {
+        this.energyTransferTowardsRightObserver = observer;
+    }
+    public void onEnergyTransferredTowardsLeft(Runnable observer) {
+        this.energyTransferTowardsLeftObserver = observer;
+    }
+    public void onEnergyTransferredTowardsDown(Runnable observer) {
+        this.energyTransferTowardsDownObserver = observer;
+    }
+    public void onEnergyTransferredTowardsUp(Runnable observer) {
+        this.energyTransferTowardsUpObserver = observer;
+    }
+
+    public void notifyEnergyTransferredTowardsRight() {
+        if (this.energyTransferTowardsRightObserver != null) {
+            this.energyTransferTowardsRightObserver.run();
+        }
+    }
+    public void notifyEnergyTransferredTowardsLeft() {
+        if (this.energyTransferTowardsLeftObserver != null) {
+            this.energyTransferTowardsLeftObserver.run();
+        }
+    }
+    public void notifyEnergyTransferredTowardsDown() {
+        if (this.energyTransferTowardsDownObserver != null) {
+            this.energyTransferTowardsDownObserver.run();
+        }
+    }
+    public void notifyEnergyTransferredTowardsUp() {
+        if (this.energyTransferTowardsUpObserver != null) {
+            this.energyTransferTowardsUpObserver.run();
+        }
+    }
+
 }

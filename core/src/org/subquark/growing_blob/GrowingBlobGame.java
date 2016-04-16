@@ -60,8 +60,18 @@ public class GrowingBlobGame extends ApplicationAdapter {
         Cell routerCell = simulator.getCell(3, 3);
         routerCell.setCellContent(new EnergyRouter(r));
 
-        Cell builderCell = simulator.getCell(3, 4);
+        routerCell = simulator.getCell(2, 3);
+        routerCell.setCellContent(new EnergyRouter(r));
+
+        routerCell = simulator.getCell(1, 3);
+        routerCell.setCellContent(new EnergyRouter(r));
+
+        routerCell = simulator.getCell(0, 3);
+        routerCell.setCellContent(new EnergyRouter(r));
+
+        Cell builderCell = simulator.getCell(0, 4);
         builderCell.setCellContent(new BuildPointGenerator());
+
 
 
     }

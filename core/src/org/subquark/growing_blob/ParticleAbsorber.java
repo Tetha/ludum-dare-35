@@ -37,6 +37,12 @@ public class ParticleAbsorber extends CellContent {
         while (getEnergy() > 0 && transferCapacity > 0 && acceptingNeighbours.size() > 0 ) {
             int idx = r.nextInt(acceptingNeighbours.size());
             CellContent target = acceptingNeighbours.get(idx);
+
+            if (target.getCell() == northNeighbour) myCell.notifyEnergyTransferredTowardsUp();
+            if (target.getCell() == eastNeighbour) myCell.notifyEnergyTransferredTowardsRight();
+            if (target.getCell() == southNeighbour) myCell.notifyEnergyTransferredTowardsDown();
+            if (target.getCell() == westNeighbour) myCell.notifyEnergyTransferredTowardsLeft();
+
             target.addEnergy(1);
             this.removeEnergy(1);
             transferCapacity --;
