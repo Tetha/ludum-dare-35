@@ -179,6 +179,10 @@ public class World {
 
     public int getPlayerBuildPoints() { return playerBuildPoints; }
 
+    public void addPlayerBuildPoints(int energy) {
+        this.playerBuildPoints += energy;
+    }
+
     public List<Emitter> getLeftEmitters() {
         return leftEmitters;
     }

@@ -27,6 +27,10 @@ public abstract class CellContent {
         }
     }
 
+    public void setEnergy(int amount) {
+        this.energy = amount;
+    }
+
     public void addParticleEnergy(int amount) {
         this.energy += amount;
         if (this.energy > type.getMaxEnergy()) this.energy = type.getMaxEnergy();
@@ -34,6 +38,7 @@ public abstract class CellContent {
 
     public void commitEnergy() {
         this.energy = incomingEnergy;
+        incomingEnergy = 0;
         if (this.energy > type.getMaxEnergy()) this.energy = type.getMaxEnergy();
     }
 

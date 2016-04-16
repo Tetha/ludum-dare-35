@@ -44,6 +44,10 @@ public class CellBackgroundDisplay extends Actor {
                 drawRouter(parentAlpha);
                 break;
 
+            case BUILD_POINT_GENERATOR:
+                drawBuildPointGenerator(parentAlpha);
+                break;
+
             default:
                 System.err.println("Cannot handle type " + cell.getContent().getType());
                 break;
@@ -60,6 +64,13 @@ public class CellBackgroundDisplay extends Actor {
     private void drawRouter(float parentAlpha) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(0.2f, 0.8f, 0.2f, parentAlpha);
+        shapeRenderer.rect(10, 10, getWidth() - 2*10, getHeight() - 2*10);
+        shapeRenderer.end();
+    }
+
+    private void drawBuildPointGenerator(float parentAlpha) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(0.2f, 0.2f, 0.8f, parentAlpha);
         shapeRenderer.rect(10, 10, getWidth() - 2*10, getHeight() - 2*10);
         shapeRenderer.end();
     }
