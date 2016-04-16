@@ -45,6 +45,9 @@ public class GrowingBlobGame extends ApplicationAdapter {
 
         Cell testCell = simulator.getCell(3, 3);
         testCell.setCellContent(new ParticleAbsorber());
+
+        Cell routerCell = simulator.getCell(3, 4);
+        routerCell.setCellContent(new EnergyRouter());
 	}
 
     private void createBottomEmitters(Random r) {

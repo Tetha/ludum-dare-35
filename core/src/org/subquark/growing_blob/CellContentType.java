@@ -1,7 +1,7 @@
 package org.subquark.growing_blob;
 
 public enum CellContentType {
-    PARTICLE_ABSORBER(3);
+    PARTICLE_ABSORBER(3), ROUTER(10);
 
     private final int maxEnergy;
 
