@@ -14,6 +14,8 @@ public class World {
 
     private int callbacksSubmitted;
 
+    private int playerBuildPoints = 0;
+
     public void simulateTurn() {
         if (callbacksSubmitted != 0) {
             System.err.println("Something weird is going on - callbacksSubmitted should be 0, but is " + callbacksSubmitted);
@@ -174,6 +176,8 @@ public class World {
         }
         return rowList.get(column);
     }
+
+    public int getPlayerBuildPoints() { return playerBuildPoints; }
 
     public List<Emitter> getLeftEmitters() {
         return leftEmitters;

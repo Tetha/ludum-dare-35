@@ -16,11 +16,10 @@ public class CellDisplay extends Group {
         background.setHeight(50);
         addActor(background);
 
-        Group blipGroup = new Group();
-        blipGroup.setX(10);
-        blipGroup.setY(10);
-
-        this.addActor(new BlipMeter(3, 3, this::getEnergyInCell));
+        BlipMeter meter = new BlipMeter(3, 3, this::getEnergyInCell);
+        meter.setX(10);
+        meter.setY(10);
+        this.addActor(meter);
     }
 
     private int getEnergyInCell() {

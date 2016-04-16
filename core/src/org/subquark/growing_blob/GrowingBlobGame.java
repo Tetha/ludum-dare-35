@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.ArrayList;
@@ -27,6 +28,16 @@ public class GrowingBlobGame extends ApplicationAdapter {
         createRightEmitters(r);
         createTopEmitters(r);
         createBottomEmitters(r);
+
+        Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
+
+        BuildPointDisplay buildPointDisplay = new BuildPointDisplay(uiSkin, simulator::getPlayerBuildPoints);
+        stage.addActor(buildPointDisplay);
+        buildPointDisplay.setX(400);
+        buildPointDisplay.setY(400);
+        buildPointDisplay.setHeight(50);
+        buildPointDisplay.setWidth(150);
+        buildPointDisplay.setDebug(true);
 
         Emitter testEmitter = simulator.getLeftEmitters().get(3);
         testEmitter.setColor(Color.YELLOW);

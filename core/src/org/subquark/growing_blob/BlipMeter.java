@@ -19,8 +19,6 @@ public class BlipMeter extends Group {
         this.blipCols = blipCols;
 
         Group blipGroup = new Group();
-        blipGroup.setX(10);
-        blipGroup.setY(10);
 
         this.addActor(blipGroup);
         rcBlips = new EnergyBlip[blipRows][blipCols];
