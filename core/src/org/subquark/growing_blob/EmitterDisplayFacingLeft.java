@@ -21,12 +21,7 @@ public class EmitterDisplayFacingLeft extends Actor {
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
         shapeRenderer.translate(getX(), getY(), 0);
-/*
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(1, 1, 1, parentAlpha);
-        shapeRenderer.rect(0, 0, getWidth(), getHeight());
-        shapeRenderer.end();
-*/
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(emitter.getColor().getR(), emitter.getColor().getG(), emitter.getColor().getB(), parentAlpha);
 

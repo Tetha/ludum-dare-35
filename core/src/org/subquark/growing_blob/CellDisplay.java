@@ -6,10 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class CellDisplay extends Actor {
     private final ShapeRenderer shapeRenderer;
+    private final Cell cell;
 
     private static final int MARGIN = 5;
 
-    public CellDisplay() {
+    public CellDisplay(Cell cell) {
+        this.cell = cell;
         this.shapeRenderer = new ShapeRenderer();
     }
 

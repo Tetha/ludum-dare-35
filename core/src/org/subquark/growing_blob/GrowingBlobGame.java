@@ -14,10 +14,7 @@ import java.util.Random;
 public class GrowingBlobGame extends ApplicationAdapter {
 	private Stage stage;
 
-    private List<Emitter> leftEmitters;
-    private List<Emitter> rightEmitters;
-    private List<Emitter> topEmitters;
-    private List<Emitter> bottomEmitters;
+    private Simulator simulator = new Simulator();
 
     private List<EmitterDisplayFacingDown> firedEmitters;
 	@Override
@@ -27,35 +24,19 @@ public class GrowingBlobGame extends ApplicationAdapter {
 
         createCellDisplays();
 
-        Group leftEmitterDisplays = new Group();
-        leftEmitters = new ArrayList();
-
-        createCellDisplays();
-        stage.addActor(leftEmitterDisplays);
-        for (int i = 0; i < 6; i++) {
-            Emitter emitter = new Emitter();
-            emitter.setColor(Color.values()[r.nextInt(3)]);
-            emitter.setLevel(r.nextInt(4));
-
-            EmitterDisplayFacingRight emitterDisplay = new EmitterDisplayFacingRight(emitter);
-            emitterDisplay.setX(0);
-            emitterDisplay.setY(50 * i);
-            emitterDisplay.setWidth(50);
-            emitterDisplay.setHeight(50);
-
-            leftEmitterDisplays.addActor(emitterDisplay);
-            leftEmitters.add(emitter);
-        }
-        leftEmitterDisplays.setY(50);
+        createLeftEmitters(r);
 
         Group rightEmitterDisplays = new Group();
-        rightEmitters = new ArrayList<>();
+        List<Emitter> rightEmitters = new ArrayList<>();
+        simulator.setRightEmitters(rightEmitters);
 
         stage.addActor(rightEmitterDisplays);
         for (int i = 0; i < 6; i++) {
             Emitter emitter = new Emitter();
             emitter.setColor(Color.values()[r.nextInt(3)]);
             emitter.setLevel(r.nextInt(4));
+            emitter.setRow(i);
+            emitter.setColumn(-1);
 
             EmitterDisplayFacingLeft emitterDisplay = new EmitterDisplayFacingLeft(emitter);
             emitterDisplay.setX(0);
@@ -71,13 +52,16 @@ public class GrowingBlobGame extends ApplicationAdapter {
 
         Group topEmitterDisplays = new Group();
         firedEmitters = new ArrayList<>();
-        topEmitters = new ArrayList();
+        List<Emitter> topEmitters = new ArrayList();
+        simulator.setTopEmitters(topEmitters);
 
         stage.addActor(topEmitterDisplays);
         for (int i = 0; i < 6; i++) {
             Emitter emitter = new Emitter();
             emitter.setColor(Color.values()[r.nextInt(3)]);
             emitter.setLevel(r.nextInt(4));
+            emitter.setRow(-1);
+            emitter.setColumn(i);
 
             EmitterDisplayFacingDown emitterDisplay = new EmitterDisplayFacingDown(emitter);
             emitterDisplay.setX(50 * i);
@@ -93,13 +77,16 @@ public class GrowingBlobGame extends ApplicationAdapter {
         topEmitterDisplays.setX(50);
 
         Group bottomEmitterDisplays = new Group();
-        bottomEmitters = new ArrayList();
+        List<Emitter> bottomEmitters = new ArrayList();
+        simulator.setBottomEmitters(bottomEmitters);
 
         stage.addActor(bottomEmitterDisplays);
         for (int i = 0; i < 6; i++) {
             Emitter emitter = new Emitter();
             emitter.setColor(Color.values()[r.nextInt(3)]);
             emitter.setLevel(r.nextInt(4));
+            emitter.setRow(-1);
+            emitter.setColumn(i);
 
             EmitterDisplayFacingUp emitterDisplay = new EmitterDisplayFacingUp(emitter);
             emitterDisplay.setX(50 * i);
@@ -114,19 +101,54 @@ public class GrowingBlobGame extends ApplicationAdapter {
         bottomEmitterDisplays.setX(50);
 	}
 
+    private void createLeftEmitters(Random r) {
+        Group leftEmitterDisplays = new Group();
+        List<Emitter> leftEmitters = new ArrayList<>();
+        simulator.setLeftEmitters(leftEmitters);
+
+        createCellDisplays();
+        stage.addActor(leftEmitterDisplays);
+        for (int i = 0; i < 6; i++) {
+            Emitter emitter = new Emitter();
+            emitter.setColor(Color.values()[r.nextInt(3)]);
+            emitter.setLevel(r.nextInt(4));
+            emitter.setRow(i);
+            emitter.setColumn(-1);
+
+            EmitterDisplayFacingRight emitterDisplay = new EmitterDisplayFacingRight(emitter);
+            emitterDisplay.setX(0);
+            emitterDisplay.setY(50 * i);
+            emitterDisplay.setWidth(50);
+            emitterDisplay.setHeight(50);
+
+            leftEmitterDisplays.addActor(emitterDisplay);
+            leftEmitters.add(emitter);
+
+            emitter.addBulletFiredObserver(emitterDisplay::onBulletFired);
+        }
+        leftEmitterDisplays.setY(50);
+    }
+
     private final void createCellDisplays() {
         Group cells = new Group();
         stage.addActor(cells);
         cells.setX(50);
         cells.setY(50);
 
+        List<List<Cell>> rcCells = new ArrayList<>();
+        simulator.setRcCells(rcCells);
+
         for (int row = 0; row < 6; row++) {
             Group rowGroup = new Group();
             cells.addActor(rowGroup);
             rowGroup.setY(row * 50);
-
+            List<Cell> rowList = new ArrayList<Cell>();
+            rcCells.add(rowList);
             for (int col = 0; col < 6; col++) {
-                CellDisplay display = new CellDisplay();
+                Cell cell = new Cell();
+                rowList.add(cell);
+
+                CellDisplay display = new CellDisplay(cell);
                 display.setX(col * 50);
                 display.setWidth(50);
                 display.setHeight(50);
@@ -146,7 +168,7 @@ public class GrowingBlobGame extends ApplicationAdapter {
 
         timeSinceFired += Gdx.graphics.getDeltaTime();
         if (timeSinceFired > 1.5) {
-            firedEmitters.forEach(emitter -> emitter.onFired());
+            simulator.simulateTurn();
             timeSinceFired = 0;
         }
 	}
