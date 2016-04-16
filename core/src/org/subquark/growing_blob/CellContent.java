@@ -2,6 +2,7 @@ package org.subquark.growing_blob;
 
 public abstract class CellContent {
     private final CellContentType type;
+    private Cell cell;
     private int energy;
 
     protected CellContent(CellContentType type) {
@@ -34,5 +35,15 @@ public abstract class CellContent {
 
     public boolean canAcceptMoreEnergy() {
         return this.energy < type.getMaxEnergy();
+    }
+
+    public abstract void tick();
+
+    protected Cell getCell() {
+        return cell;
+    }
+
+    public void setCell(Cell cell) {
+        this.cell = cell;
     }
 }

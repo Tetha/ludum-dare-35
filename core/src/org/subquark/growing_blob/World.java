@@ -1,8 +1,10 @@
 package org.subquark.growing_blob;
 
+import com.badlogic.gdx.utils.Timer;
+
 import java.util.List;
 
-public class Simulator {
+public class World {
     private List<Emitter> leftEmitters;
     private List<Emitter> rightEmitters;
     private List<Emitter> topEmitters;
@@ -10,7 +12,14 @@ public class Simulator {
 
     private List<List<Cell>> rcCells;
 
+    private int callbacksSubmitted;
+
     public void simulateTurn() {
+        if (callbacksSubmitted != 0) {
+            System.err.println("Something weird is going on - callbacksSubmitted should be 0, but is " + callbacksSubmitted);
+            callbacksSubmitted = 0;
+        }
+
         handleLeftEmitters();
         handleRightEmitters();
         handleTopEmitters();
@@ -19,6 +28,8 @@ public class Simulator {
 
     private void handleLeftEmitters() {
         for(Emitter emitter : leftEmitters) {
+            if (!emitter.isSetup()) continue;
+
             int row  = emitter.getRow();
             int collidedCol = -1;
 
@@ -33,25 +44,48 @@ public class Simulator {
             if (collidedCol == -1) {
                 emitter.fireBullet(0, 6, () -> {});
             } else {
-                System.out.println("left emitter passed on callback");
                 emitter.fireBullet(0, collidedCol, onCellCollision(row, collidedCol));
             }
         }
     }
 
     private Runnable onCellCollision(int row, int collidedCol) {
+        callbacksSubmitted++;
+        System.out.println("Callbacks submitted are: " + callbacksSubmitted);
         return () -> {
+            callbacksSubmitted--;
             Cell collidedCell = getCell(row, collidedCol);
             if (collidedCell.getContent().getType() == CellContentType.PARTICLE_ABSORBER) {
                 if (collidedCell.getContent().canAcceptMoreEnergy() ) {
                     collidedCell.getContent().addEnergy(1);
                 }
             }
+
+            System.out.println("Callbaks submitted is: " + callbacksSubmitted);
+            if (callbacksSubmitted == 0) {
+                Timer.schedule(new Timer.Task() {
+                    public void run() {
+                        tickCells();
+                    }
+                }, 3f);
+            }
         };
+    }
+
+    private void tickCells() {
+        for (List<Cell> row : rcCells) {
+            for (Cell cell : row) {
+                if (cell.getContent() != null) {
+                    cell.getContent().tick();
+                }
+            }
+        }
     }
 
     private void handleRightEmitters() {
         for(Emitter emitter : rightEmitters) {
+            if (!emitter.isSetup()) continue;
+
             int row  = emitter.getRow();
             int collidedCol = -1;
 
@@ -73,6 +107,8 @@ public class Simulator {
 
     private void handleTopEmitters() {
         for(Emitter emitter : topEmitters) {
+            if (!emitter.isSetup()) continue;
+
             int col  = emitter.getColumn();
             int collidedRow = -1;
 
@@ -94,6 +130,8 @@ public class Simulator {
 
     private void handleBottomEmitters() {
         for(Emitter emitter : bottomEmitters) {
+            if (!emitter.isSetup()) continue;
+
             int col  = emitter.getColumn();
             int collidedRow = -1;
 

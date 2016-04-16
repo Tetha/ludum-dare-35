@@ -14,7 +14,7 @@ import java.util.Random;
 public class GrowingBlobGame extends ApplicationAdapter {
 	private Stage stage;
 
-    private Simulator simulator = new Simulator();
+    private World simulator = new World();
 
     private List<EmitterDisplayFacingDown> firedEmitters;
 	@Override
@@ -44,7 +44,7 @@ public class GrowingBlobGame extends ApplicationAdapter {
         noiseEmitter.setLevel(3);
 
         Cell testCell = simulator.getCell(3, 3);
-        testCell.setCellContent(new ParticleAbsorber());
+        testCell.setCellContent(new ParticleAbsorber(r));
 
         Cell routerCell = simulator.getCell(3, 4);
         routerCell.setCellContent(new EnergyRouter());
@@ -170,6 +170,9 @@ public class GrowingBlobGame extends ApplicationAdapter {
             for (int col = 0; col < 6; col++) {
                 Cell cell = new Cell();
                 rowList.add(cell);
+                cell.setRow(row);
+                cell.setCol(col);
+                cell.setWorld(simulator);
 
                 CellDisplay display = new CellDisplay(cell);
                 display.setX(col * 50);
@@ -180,7 +183,7 @@ public class GrowingBlobGame extends ApplicationAdapter {
         }
     }
 
-    private float timeSinceFired = 0f;
+    private float timeSinceFired = 40f;
 	@Override
 	public void render () {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
@@ -190,7 +193,7 @@ public class GrowingBlobGame extends ApplicationAdapter {
 		stage.draw();
 
         timeSinceFired += Gdx.graphics.getDeltaTime();
-        if (timeSinceFired > 3) {
+        if (timeSinceFired > 10) {
             simulator.simulateTurn();
             timeSinceFired = 0;
         }
