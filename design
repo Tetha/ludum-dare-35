@@ -1,0 +1,30 @@
+The game is split into a ring of particle emitters, and a bowl, which is a square grid of fields.
+
+The game randomly places or upgrades particle emitters in red, blue or yellow on the rim.
+During each turn, these emitters shoot a particle into the ring.
+
+The player has cards to grow a strange blob in the bowl.
+
+The following cards exist:
+
+ - Particle absorbers. If a particle hits a particle absorber, the absorber stores it.
+   If the absorber has two particles stored, it will turn the two particles into one
+   piece of energy. If there is at least one other piece of blob around, the particle
+   emitter will try to move that energy over there.
+
+   The absorber can hold 3 energy at most. Once that energy is there, it destroys
+   particles, but doesn't produce energy
+
+ - Grower: A growing cell will consume energy pushed into it and add it to the players
+   available energy. The player can spend this energy on buying new cells.
+
+ - Point Generator. A Point generator consumes energy pushed into it and increases
+   the score of the player
+
+ - Router: The router pushes energy into a random direction.
+
+   The router can push 5 energy at most, and store 10 energy at most.
+
+
+The game ends if the entire bowl is full and the player is rated according to
+his final score.
