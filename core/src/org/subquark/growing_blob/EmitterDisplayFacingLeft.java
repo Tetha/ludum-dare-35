@@ -51,7 +51,7 @@ public class EmitterDisplayFacingLeft extends AbstractEmitterDisplay {
         batch.begin();
     }
 
-    public void onBulletFired(int rowsTravelled, int columnsTravelled) {
+    public void onBulletFired(int rowsTravelled, int columnsTravelled, Runnable callback) {
         float totalEmitterWidth = getWidth() - MARGIN;
         float barrelWidth = (getHeight() - MARGIN) / 3;
 
@@ -68,8 +68,7 @@ public class EmitterDisplayFacingLeft extends AbstractEmitterDisplay {
             BulletDisplay newBullet = BulletDisplay.centeredAt(parentCoords.x, parentCoords.y, emitter.getColor());
             getParent().addActor(newBullet);
 
-            SequenceAction animation = createBulletAnimation(rowsTravelled, columnsTravelled, targetCoords);
-            newBullet.addAction(animation);
+            newBullet.addAction(createBulletAnimation(rowsTravelled, columnsTravelled, targetCoords, callback));
         }
 
         if (emitter.getLevel() >= 2) {
@@ -101,8 +100,11 @@ public class EmitterDisplayFacingLeft extends AbstractEmitterDisplay {
             newBullet.addAction(animation);
         }
     }
-
     private SequenceAction createBulletAnimation(int rowsTravelled, int columnsTravelled, Vector2 targetCoords) {
+        return createBulletAnimation(rowsTravelled, columnsTravelled, targetCoords, () -> {});
+    }
+
+    private SequenceAction createBulletAnimation(int rowsTravelled, int columnsTravelled, Vector2 targetCoords, Runnable callback) {
         SequenceAction animation = Actions.sequence();
         animation.addAction(moveTo(targetCoords.x, targetCoords.y, travelTime(columnsTravelled)));
 
@@ -115,6 +117,7 @@ public class EmitterDisplayFacingLeft extends AbstractEmitterDisplay {
             // the bullet impacted, it needs to explode or something
             animation.addAction(Actions.sizeBy(2, 2, 0.2f));
         }
+        animation.addAction(run(callback));
         animation.addAction(removeActor());
         return animation;
     }

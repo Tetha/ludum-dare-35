@@ -45,7 +45,6 @@ public class GrowingBlobGame extends ApplicationAdapter {
 
         Cell testCell = simulator.getCell(3, 3);
         testCell.setCellContent(new ParticleAbsorber());
-        testCell.getContent().addEnergy(2);
 	}
 
     private void createBottomEmitters(Random r) {
@@ -67,7 +66,7 @@ public class GrowingBlobGame extends ApplicationAdapter {
 
             bottomEmitterDisplays.addActor(emitterDisplay);
             bottomEmitters.add(emitter);
-            emitter.addBulletFiredObserver(emitterDisplay::onBulletFired);
+            emitter.setBulletFiredObservers(emitterDisplay::onBulletFired);
         }
         bottomEmitterDisplays.setY(0);
         bottomEmitterDisplays.setX(50);
@@ -93,7 +92,7 @@ public class GrowingBlobGame extends ApplicationAdapter {
 
             topEmitterDisplays.addActor(emitterDisplay);
             topEmitters.add(emitter);
-            emitter.addBulletFiredObserver(emitterDisplay::onBulletFired);
+            emitter.setBulletFiredObservers(emitterDisplay::onBulletFired);
         }
         topEmitterDisplays.setY(350);
         topEmitterDisplays.setX(50);
@@ -118,7 +117,7 @@ public class GrowingBlobGame extends ApplicationAdapter {
 
             rightEmitterDisplays.addActor(emitterDisplay);
             rightEmitters.add(emitter);
-            emitter.addBulletFiredObserver(emitterDisplay::onBulletFired);
+            emitter.setBulletFiredObservers(emitterDisplay::onBulletFired);
         }
         rightEmitterDisplays.setY(50);
         rightEmitterDisplays.setX(350);
@@ -145,7 +144,7 @@ public class GrowingBlobGame extends ApplicationAdapter {
             leftEmitterDisplays.addActor(emitterDisplay);
             leftEmitters.add(emitter);
 
-            emitter.addBulletFiredObserver(emitterDisplay::onBulletFired);
+            emitter.setBulletFiredObservers(emitterDisplay::onBulletFired);
         }
         leftEmitterDisplays.setY(50);
     }
@@ -188,7 +187,7 @@ public class GrowingBlobGame extends ApplicationAdapter {
 		stage.draw();
 
         timeSinceFired += Gdx.graphics.getDeltaTime();
-        if (timeSinceFired > 1.5) {
+        if (timeSinceFired > 3) {
             simulator.simulateTurn();
             timeSinceFired = 0;
         }

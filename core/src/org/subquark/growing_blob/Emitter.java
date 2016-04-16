@@ -1,5 +1,6 @@
 package org.subquark.growing_blob;
 
+import javax.management.Notification;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class Emitter {
     private int row;
     private int column;
 
-    private List<BulletFiredObserver> bulletFiredObservers = new ArrayList<>();
+    private BulletFiredObserver bulletFiredObserver;
 
     public Emitter() {
     }
@@ -61,18 +62,16 @@ public class Emitter {
         this.column = column;
     }
 
-    public void addBulletFiredObserver(BulletFiredObserver observer) {
-        bulletFiredObservers.add(observer);
+    public void setBulletFiredObservers(BulletFiredObserver observer) {
+        bulletFiredObserver = observer;
     }
 
-    public void fireBullet(int rowsTravelled, int columnsTravelled) {
-        for (BulletFiredObserver observer : bulletFiredObservers) {
-            observer.onFired(rowsTravelled, columnsTravelled);
-        }
+    public void fireBullet(int rowsTravelled, int columnsTravelled, Runnable callback) {
+        bulletFiredObserver.onFired(rowsTravelled, columnsTravelled, callback);
     }
 
     @FunctionalInterface
     public interface BulletFiredObserver {
-        void onFired(int rowsTravelled, int columnsTravelled);
+        void onFired(int rowsTravelled, int columnsTravelled, Runnable callback);
     }
 }

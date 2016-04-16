@@ -31,4 +31,8 @@ public abstract class CellContent {
             throw new IllegalStateException("Cannot have negative energy. Current: " + this.energy);
         }
     }
+
+    public boolean canAcceptMoreEnergy() {
+        return this.energy < type.getMaxEnergy();
+    }
 }

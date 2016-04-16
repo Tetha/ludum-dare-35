@@ -25,18 +25,29 @@ public class Simulator {
             for ( int column = 0; column < 6; column ++) {
                 Cell cell = getCell(row, column);
                 if (!cell.isEmpty() ) {
-                    System.out.println("Collision!");
                     collidedCol = column;
                     break;
                 }
             }
 
             if (collidedCol == -1) {
-                emitter.fireBullet(0, 6);
+                emitter.fireBullet(0, 6, () -> {});
             } else {
-                emitter.fireBullet(0, collidedCol);
+                System.out.println("left emitter passed on callback");
+                emitter.fireBullet(0, collidedCol, onCellCollision(row, collidedCol));
             }
         }
+    }
+
+    private Runnable onCellCollision(int row, int collidedCol) {
+        return () -> {
+            Cell collidedCell = getCell(row, collidedCol);
+            if (collidedCell.getContent().getType() == CellContentType.PARTICLE_ABSORBER) {
+                if (collidedCell.getContent().canAcceptMoreEnergy() ) {
+                    collidedCell.getContent().addEnergy(1);
+                }
+            }
+        };
     }
 
     private void handleRightEmitters() {
@@ -47,16 +58,15 @@ public class Simulator {
             for ( int column = 5; 0 <= column; column --) {
                 Cell cell = getCell(row, column);
                 if (!cell.isEmpty() ) {
-                    System.out.println("Collision!");
                     collidedCol = column;
                     break;
                 }
             }
 
             if (collidedCol == -1) {
-                emitter.fireBullet(0, 6);
+                emitter.fireBullet(0, 6, () -> {});
             } else {
-                emitter.fireBullet(0, collidedCol);
+                emitter.fireBullet(0, collidedCol, onCellCollision(row, collidedCol));
             }
         }
     }
@@ -69,16 +79,15 @@ public class Simulator {
             for ( int row = 5; 0 <= row; row --) {
                 Cell cell = getCell(row, col);
                 if (!cell.isEmpty() ) {
-                    System.out.println("Collision!");
                     collidedRow = row;
                     break;
                 }
             }
 
             if (collidedRow == -1) {
-                emitter.fireBullet(6, 0);
+                emitter.fireBullet(6, 0, () -> {});
             } else {
-                emitter.fireBullet(collidedRow, 0);
+                emitter.fireBullet(collidedRow, 0, onCellCollision(collidedRow, col));
             }
         }
     }
@@ -91,20 +100,22 @@ public class Simulator {
             for ( int row = 0; row < 6; row ++) {
                 Cell cell = getCell(row, col);
                 if (!cell.isEmpty() ) {
-                    System.out.println("Collision!");
                     collidedRow = row;
                     break;
                 }
             }
 
             if (collidedRow == -1) {
-                emitter.fireBullet(6, 0);
+                emitter.fireBullet(6, 0, () -> {});
             } else {
-                emitter.fireBullet(collidedRow, 0);
+                emitter.fireBullet(collidedRow, 0, onCellCollision(collidedRow, col));
             }
         }
     }
 
+    private void bulletAnimationComplete() {
+        System.out.println("Kaboom");
+    }
 
     public Cell getCell(int row, int column) {
         return rcCells.get(row).get(column);
