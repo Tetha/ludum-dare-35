@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Emitter {
+    private boolean isSetup;
     private Color color;
     private int level;
 
@@ -13,6 +14,12 @@ public class Emitter {
     private List<BulletFiredObserver> bulletFiredObservers = new ArrayList<>();
 
     public Emitter() {
+    }
+
+    public boolean isSetup() { return isSetup; }
+
+    public void setIsSetup(boolean value) {
+        isSetup = value;
     }
 
     public Color getColor() {

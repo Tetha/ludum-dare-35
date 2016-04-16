@@ -23,14 +23,23 @@ public class GrowingBlobGame extends ApplicationAdapter {
 		stage = new Stage(new ScreenViewport());
 
         createCellDisplays();
-
         createLeftEmitters(r);
-
         createRightEmitters(r);
-
         createTopEmitters(r);
-
         createBottomEmitters(r);
+
+        Emitter testEmitter = simulator.getLeftEmitters().get(3);
+        testEmitter.setColor(Color.YELLOW);
+        testEmitter.setIsSetup(true);
+        testEmitter.setLevel(1);
+
+        Emitter speedTestEmitter = simulator.getLeftEmitters().get(4);
+        speedTestEmitter.setColor(Color.BLUE);
+        speedTestEmitter.setIsSetup(true);
+        speedTestEmitter.setLevel(1);
+
+        Cell testCell = simulator.getCell(3, 3);
+        testCell.setCellContent(new ParticleAbsorber());
 	}
 
     private void createBottomEmitters(Random r) {
@@ -41,8 +50,6 @@ public class GrowingBlobGame extends ApplicationAdapter {
         stage.addActor(bottomEmitterDisplays);
         for (int i = 0; i < 6; i++) {
             Emitter emitter = new Emitter();
-            emitter.setColor(Color.values()[r.nextInt(3)]);
-            emitter.setLevel(r.nextInt(4));
             emitter.setRow(-1);
             emitter.setColumn(i);
 
@@ -69,8 +76,6 @@ public class GrowingBlobGame extends ApplicationAdapter {
         stage.addActor(topEmitterDisplays);
         for (int i = 0; i < 6; i++) {
             Emitter emitter = new Emitter();
-            emitter.setColor(Color.values()[r.nextInt(3)]);
-            emitter.setLevel(r.nextInt(4));
             emitter.setRow(-1);
             emitter.setColumn(i);
 
@@ -96,8 +101,6 @@ public class GrowingBlobGame extends ApplicationAdapter {
         stage.addActor(rightEmitterDisplays);
         for (int i = 0; i < 6; i++) {
             Emitter emitter = new Emitter();
-            emitter.setColor(Color.values()[r.nextInt(3)]);
-            emitter.setLevel(r.nextInt(4));
             emitter.setRow(i);
             emitter.setColumn(-1);
 
@@ -124,8 +127,6 @@ public class GrowingBlobGame extends ApplicationAdapter {
         stage.addActor(leftEmitterDisplays);
         for (int i = 0; i < 6; i++) {
             Emitter emitter = new Emitter();
-            emitter.setColor(Color.values()[r.nextInt(3)]);
-            emitter.setLevel(r.nextInt(4));
             emitter.setRow(i);
             emitter.setColumn(-1);
 

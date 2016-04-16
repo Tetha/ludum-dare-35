@@ -32,7 +32,9 @@ public class Simulator {
             }
 
             if (collidedCol == -1) {
-                emitter.fireBullet(7, 0);
+                emitter.fireBullet(6, 0);
+            } else {
+                emitter.fireBullet(collidedCol, 0);
             }
         }
     }
@@ -52,7 +54,9 @@ public class Simulator {
             }
 
             if (collidedCol == -1) {
-                emitter.fireBullet(7, 0);
+                emitter.fireBullet(6, 0);
+            } else {
+                emitter.fireBullet(collidedCol, 0);
             }
         }
     }
@@ -72,7 +76,9 @@ public class Simulator {
             }
 
             if (collidedRow == -1) {
-                emitter.fireBullet(0, 7);
+                emitter.fireBullet(0, 6);
+            } else {
+                emitter.fireBullet(0, collidedRow);
             }
         }
     }
@@ -92,13 +98,15 @@ public class Simulator {
             }
 
             if (collidedRow == -1) {
-                emitter.fireBullet(0, 7);
+                emitter.fireBullet(0, 6);
+            } else {
+                emitter.fireBullet(0, collidedRow);
             }
         }
     }
 
 
-    private Cell getCell(int row, int column) {
+    public Cell getCell(int row, int column) {
         return rcCells.get(row).get(column);
     }
 

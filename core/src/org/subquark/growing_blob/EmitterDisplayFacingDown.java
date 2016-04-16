@@ -9,7 +9,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
-public class EmitterDisplayFacingDown extends Actor {
+public class EmitterDisplayFacingDown extends AbstractEmitterDisplay {
     private final ShapeRenderer shapeRenderer;
     private final Emitter emitter;
 
@@ -22,6 +22,8 @@ public class EmitterDisplayFacingDown extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (!emitter.isSetup()) return;
+
         batch.end();
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
@@ -62,7 +64,7 @@ public class EmitterDisplayFacingDown extends Actor {
 
             BulletDisplay newBullet = BulletDisplay.centeredAt(parentCoords.x, parentCoords.y, emitter.getColor());
             getParent().addActor(newBullet);
-            newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, 2),
+            newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, travelTime(columnsTravelled)),
                     removeActor()));
         }
 
@@ -76,7 +78,7 @@ public class EmitterDisplayFacingDown extends Actor {
 
             BulletDisplay newBullet = BulletDisplay.centeredAt(parentCoords.x, parentCoords.y, emitter.getColor());
             getParent().addActor(newBullet);
-            newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, 2),
+            newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, travelTime(columnsTravelled)),
                     removeActor()));
         }
 
@@ -91,7 +93,7 @@ public class EmitterDisplayFacingDown extends Actor {
 
             BulletDisplay newBullet = BulletDisplay.centeredAt(parentCoords.x, parentCoords.y, emitter.getColor());
             getParent().addActor(newBullet);
-            newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, 2),
+            newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, travelTime(columnsTravelled)),
                     removeActor()));
         }
     }

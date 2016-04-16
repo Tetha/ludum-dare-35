@@ -9,7 +9,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
-public class EmitterDisplayFacingLeft extends Actor {
+public class EmitterDisplayFacingLeft extends AbstractEmitterDisplay {
     private final ShapeRenderer shapeRenderer;
     private final Emitter emitter;
 
@@ -22,6 +22,8 @@ public class EmitterDisplayFacingLeft extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (!emitter.isSetup()) return;
+
         batch.end();
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
@@ -59,13 +61,11 @@ public class EmitterDisplayFacingLeft extends Actor {
 
             Vector2 localBulletCoordinates = new Vector2(fireX, centerOfFirstBarrel);
             Vector2 parentCoords = localToParentCoordinates(localBulletCoordinates);
-            Vector2 targetCoords = localToParentCoordinates(new Vector2(-50 * rowsTravelled +50, centerOfFirstBarrel));
+            Vector2 targetCoords = localToParentCoordinates(new Vector2(-50 * rowsTravelled, centerOfFirstBarrel));
 
-            System.out.println(parentCoords);
-            System.out.println(targetCoords);
             BulletDisplay newBullet = BulletDisplay.centeredAt(parentCoords.x, parentCoords.y, emitter.getColor());
             getParent().addActor(newBullet);
-            newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, 2),
+            newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, travelTime(columnsTravelled)),
                     removeActor()));
         }
 
@@ -75,11 +75,11 @@ public class EmitterDisplayFacingLeft extends Actor {
 
             Vector2 localBulletCoordinates = new Vector2(fireX, centerOfSecondBarrel);
             Vector2 parentCoords = localToParentCoordinates(localBulletCoordinates);
-            Vector2 targetCoords = localToParentCoordinates(new Vector2(-50 * rowsTravelled +50, centerOfSecondBarrel));
+            Vector2 targetCoords = localToParentCoordinates(new Vector2(-50 * rowsTravelled, centerOfSecondBarrel));
 
             BulletDisplay newBullet = BulletDisplay.centeredAt(parentCoords.x, parentCoords.y, emitter.getColor());
             getParent().addActor(newBullet);
-            newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, 2),
+            newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, travelTime(columnsTravelled)),
                     removeActor()));
         }
 
@@ -90,11 +90,11 @@ public class EmitterDisplayFacingLeft extends Actor {
             Vector2 localBulletCoordinates = new Vector2(fireX, centerOfThirdBarrel);
             Vector2 parentCoords = localToParentCoordinates(localBulletCoordinates);
 
-            Vector2 targetCoords = localToParentCoordinates(new Vector2(-50 * rowsTravelled +50, centerOfThirdBarrel));
+            Vector2 targetCoords = localToParentCoordinates(new Vector2(-50 * rowsTravelled, centerOfThirdBarrel));
 
             BulletDisplay newBullet = BulletDisplay.centeredAt(parentCoords.x, parentCoords.y, emitter.getColor());
             getParent().addActor(newBullet);
-            newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, 2),
+            newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, travelTime(columnsTravelled)),
                     removeActor()));
         }
     }
