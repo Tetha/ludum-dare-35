@@ -164,7 +164,15 @@ public class World {
     }
 
     public Cell getCell(int row, int column) {
-        return rcCells.get(row).get(column);
+        if (!(0 <= row && row < rcCells.size())) {
+            return null;
+        }
+        List<Cell> rowList = rcCells.get(row);
+
+        if (!(0 <= column && column < rowList.size())) {
+            return null;
+        }
+        return rowList.get(column);
     }
 
     public List<Emitter> getLeftEmitters() {
