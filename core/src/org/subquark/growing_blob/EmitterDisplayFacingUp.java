@@ -102,7 +102,9 @@ public class EmitterDisplayFacingUp extends AbstractEmitterDisplay {
 
         if (rowsTravelled >= 6 || columnsTravelled >= 6) {
             // the bullet fizzeled so we need to fade it out
-            animation.addAction(parallel(Actions.moveBy(0, 50, travelTime(1)), Actions.sizeBy(0.1f, 0.1f, travelTime(1))));
+            animation.addAction(parallel(Actions.moveBy(0, 50, travelTime(1)),
+                                         Actions.sizeBy(-2, -2, travelTime(1)),
+                                         Actions.fadeOut(travelTime(1))));
         } else {
             // the bullet impacted, it needs to explode or something
             animation.addAction(Actions.sizeBy(2, 2, 0.2f));
