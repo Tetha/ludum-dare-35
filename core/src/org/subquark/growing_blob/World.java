@@ -44,21 +44,19 @@ public class World {
             if (collidedCol == -1) {
                 emitter.fireBullet(0, 6, () -> {});
             } else {
-                emitter.fireBullet(0, collidedCol, onCellCollision(row, collidedCol));
+                emitter.fireBullet(0, collidedCol, onCellCollision(emitter.getLevel(), row, collidedCol));
             }
         }
     }
 
-    private Runnable onCellCollision(int row, int collidedCol) {
+    private Runnable onCellCollision(int energy, int row, int collidedCol) {
         callbacksSubmitted++;
         System.out.println("Callbacks submitted are: " + callbacksSubmitted);
         return () -> {
             callbacksSubmitted--;
             Cell collidedCell = getCell(row, collidedCol);
             if (collidedCell.getContent().getType() == CellContentType.PARTICLE_ABSORBER) {
-                if (collidedCell.getContent().canAcceptMoreEnergy() ) {
-                    collidedCell.getContent().addEnergy(1);
-                }
+                collidedCell.getContent().addParticleEnergy(energy);
             }
 
             System.out.println("Callbaks submitted is: " + callbacksSubmitted);
@@ -66,10 +64,20 @@ public class World {
                 Timer.schedule(new Timer.Task() {
                     public void run() {
                         tickCells();
+                        commitAllCells();
                     }
-                }, 3f);
+                }, 2f);
             }
         };
+    }
+    private void commitAllCells() {
+        for (List<Cell> row : rcCells) {
+            for (Cell cell : row) {
+                if (cell.getContent() != null) {
+                    cell.getContent().commitEnergy();
+                }
+            }
+        }
     }
 
     private void tickCells() {
@@ -100,7 +108,7 @@ public class World {
             if (collidedCol == -1) {
                 emitter.fireBullet(0, 6, () -> {});
             } else {
-                emitter.fireBullet(0, collidedCol, onCellCollision(row, collidedCol));
+                emitter.fireBullet(0, collidedCol, onCellCollision(emitter.getLevel(), row, collidedCol));
             }
         }
     }
@@ -123,7 +131,7 @@ public class World {
             if (collidedRow == -1) {
                 emitter.fireBullet(6, 0, () -> {});
             } else {
-                emitter.fireBullet(collidedRow, 0, onCellCollision(collidedRow, col));
+                emitter.fireBullet(collidedRow, 0, onCellCollision(emitter.getLevel(), collidedRow, col));
             }
         }
     }
@@ -146,7 +154,7 @@ public class World {
             if (collidedRow == -1) {
                 emitter.fireBullet(6, 0, () -> {});
             } else {
-                emitter.fireBullet(collidedRow, 0, onCellCollision(collidedRow, col));
+                emitter.fireBullet(collidedRow, 0, onCellCollision(emitter.getLevel(), collidedRow, col));
             }
         }
     }

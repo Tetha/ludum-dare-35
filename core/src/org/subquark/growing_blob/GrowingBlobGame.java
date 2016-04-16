@@ -43,12 +43,30 @@ public class GrowingBlobGame extends ApplicationAdapter {
         noiseEmitter.setIsSetup(true);
         noiseEmitter.setLevel(3);
 
-        Cell testCell = simulator.getCell(3, 3);
+        Cell testCell = simulator.getCell(3, 2);
         testCell.setCellContent(new ParticleAbsorber(r));
 
-        Cell routerCell = simulator.getCell(3, 4);
-        routerCell.setCellContent(new EnergyRouter());
-	}
+        Cell routerCell = simulator.getCell(3, 3);
+        routerCell.setCellContent(new EnergyRouter(r));
+
+        routerCell = simulator.getCell(4, 3);
+        routerCell.setCellContent(new EnergyRouter(r));
+
+        routerCell = simulator.getCell(4, 4);
+        routerCell.setCellContent(new EnergyRouter(r));
+
+        routerCell = simulator.getCell(3, 4);
+        routerCell.setCellContent(new EnergyRouter(r));
+
+        routerCell = simulator.getCell(2, 4);
+        routerCell.setCellContent(new EnergyRouter(r));
+
+        routerCell = simulator.getCell(1, 4);
+        routerCell.setCellContent(new EnergyRouter(r));
+
+        routerCell = simulator.getCell(0, 4);
+        routerCell.setCellContent(new EnergyRouter(r));
+    }
 
     private void createBottomEmitters(Random r) {
         Group bottomEmitterDisplays = new Group();

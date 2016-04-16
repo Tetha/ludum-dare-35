@@ -3,7 +3,9 @@ package org.subquark.growing_blob;
 public abstract class CellContent {
     private final CellContentType type;
     private Cell cell;
+
     private int energy;
+    private int incomingEnergy;
 
     protected CellContent(CellContentType type) {
         this.type = type;
@@ -18,11 +20,21 @@ public abstract class CellContent {
     }
 
     public void addEnergy(int amount) {
-        this.energy += amount;
+        this.incomingEnergy += amount;
 
         if (this.energy > type.getMaxEnergy()) {
             throw new IllegalArgumentException("Cannot have more than " + type.getMaxEnergy() + "energy -current: " + energy);
         }
+    }
+
+    public void addParticleEnergy(int amount) {
+        this.energy += amount;
+        if (this.energy > type.getMaxEnergy()) this.energy = type.getMaxEnergy();
+    }
+
+    public void commitEnergy() {
+        this.energy = incomingEnergy;
+        if (this.energy > type.getMaxEnergy()) this.energy = type.getMaxEnergy();
     }
 
     public void removeEnergy(int amount) {
