@@ -28,12 +28,12 @@ public class GrowingBlobGame extends ApplicationAdapter {
         createTopEmitters(r);
         createBottomEmitters(r);
 
-        Emitter testEmitter = simulator.getLeftEmitters().get(3);
+        Emitter testEmitter = simulator.getBottomEmitters().get(3);
         testEmitter.setColor(Color.YELLOW);
         testEmitter.setIsSetup(true);
         testEmitter.setLevel(1);
 
-        Emitter speedTestEmitter = simulator.getLeftEmitters().get(4);
+        Emitter speedTestEmitter = simulator.getBottomEmitters().get(4);
         speedTestEmitter.setColor(Color.BLUE);
         speedTestEmitter.setIsSetup(true);
         speedTestEmitter.setLevel(1);

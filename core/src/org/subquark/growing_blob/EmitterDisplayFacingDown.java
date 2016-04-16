@@ -4,10 +4,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class EmitterDisplayFacingDown extends AbstractEmitterDisplay {
     private final ShapeRenderer shapeRenderer;
@@ -60,12 +60,11 @@ public class EmitterDisplayFacingDown extends AbstractEmitterDisplay {
 
             Vector2 localBulletCoordinates = new Vector2(centerOfFirstBarrel, fireY);
             Vector2 parentCoords = localToParentCoordinates(localBulletCoordinates);
-            Vector2 targetCoords = localToParentCoordinates(new Vector2(centerOfFirstBarrel, -50*columnsTravelled));
+            Vector2 targetCoords = localToParentCoordinates(new Vector2(centerOfFirstBarrel, -50*rowsTravelled + 45));
 
             BulletDisplay newBullet = BulletDisplay.centeredAt(parentCoords.x, parentCoords.y, emitter.getColor());
             getParent().addActor(newBullet);
-            newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, travelTime(columnsTravelled)),
-                    removeActor()));
+            newBullet.addAction(createBulletAnimation(rowsTravelled, columnsTravelled, targetCoords));
         }
 
         if (emitter.getLevel() >= 2) {
@@ -74,12 +73,11 @@ public class EmitterDisplayFacingDown extends AbstractEmitterDisplay {
 
             Vector2 localBulletCoordinates = new Vector2(centerOfSecondBarrel, fireY);
             Vector2 parentCoords = localToParentCoordinates(localBulletCoordinates);
-            Vector2 targetCoords = localToParentCoordinates(new Vector2(centerOfSecondBarrel, -50*columnsTravelled));
+            Vector2 targetCoords = localToParentCoordinates(new Vector2(centerOfSecondBarrel, -50*rowsTravelled + 45));
 
             BulletDisplay newBullet = BulletDisplay.centeredAt(parentCoords.x, parentCoords.y, emitter.getColor());
             getParent().addActor(newBullet);
-            newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, travelTime(columnsTravelled)),
-                    removeActor()));
+            newBullet.addAction(createBulletAnimation(rowsTravelled, columnsTravelled, targetCoords));
         }
 
         if (emitter.getLevel() >= 3) {
@@ -89,12 +87,26 @@ public class EmitterDisplayFacingDown extends AbstractEmitterDisplay {
             Vector2 localBulletCoordinates = new Vector2(centerOfThirdBarrel, fireY);
             Vector2 parentCoords = localToParentCoordinates(localBulletCoordinates);
 
-            Vector2 targetCoords = localToParentCoordinates(new Vector2(centerOfThirdBarrel, -50*columnsTravelled));
+            Vector2 targetCoords = localToParentCoordinates(new Vector2(centerOfThirdBarrel, -50*rowsTravelled + 45));
 
             BulletDisplay newBullet = BulletDisplay.centeredAt(parentCoords.x, parentCoords.y, emitter.getColor());
             getParent().addActor(newBullet);
-            newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, travelTime(columnsTravelled)),
-                    removeActor()));
+            newBullet.addAction(createBulletAnimation(rowsTravelled, columnsTravelled, targetCoords));
         }
+    }
+
+    private SequenceAction createBulletAnimation(int rowsTravelled, int columnsTravelled, Vector2 targetCoords) {
+        SequenceAction animation = Actions.sequence();
+        animation.addAction(moveTo(targetCoords.x, targetCoords.y, travelTime(rowsTravelled)));
+
+        if (rowsTravelled >= 6 || columnsTravelled >= 6) {
+            // the bullet fizzeled so we need to fade it out
+            animation.addAction(parallel(Actions.moveBy(0, -50, travelTime(1)), Actions.sizeBy(0.1f, 0.1f, travelTime(1))));
+        } else {
+            // the bullet impacted, it needs to explode or something
+            animation.addAction(Actions.sizeBy(2, 2, 0.2f));
+        }
+        animation.addAction(removeActor());
+        return animation;
     }
 }

@@ -32,9 +32,9 @@ public class Simulator {
             }
 
             if (collidedCol == -1) {
-                emitter.fireBullet(6, 0);
+                emitter.fireBullet(0, 6);
             } else {
-                emitter.fireBullet(collidedCol, 0);
+                emitter.fireBullet(0, collidedCol);
             }
         }
     }
@@ -54,9 +54,9 @@ public class Simulator {
             }
 
             if (collidedCol == -1) {
-                emitter.fireBullet(6, 0);
+                emitter.fireBullet(0, 6);
             } else {
-                emitter.fireBullet(collidedCol, 0);
+                emitter.fireBullet(0, collidedCol);
             }
         }
     }
@@ -76,9 +76,9 @@ public class Simulator {
             }
 
             if (collidedRow == -1) {
-                emitter.fireBullet(0, 6);
+                emitter.fireBullet(6, 0);
             } else {
-                emitter.fireBullet(0, collidedRow);
+                emitter.fireBullet(collidedRow, 0);
             }
         }
     }
@@ -98,9 +98,9 @@ public class Simulator {
             }
 
             if (collidedRow == -1) {
-                emitter.fireBullet(0, 6);
+                emitter.fireBullet(6, 0);
             } else {
-                emitter.fireBullet(0, collidedRow);
+                emitter.fireBullet(collidedRow, 0);
             }
         }
     }

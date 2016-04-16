@@ -8,7 +8,7 @@ public class BulletDisplay extends Actor {
     private final ShapeRenderer shapeRenderer;
     private final Color color;
 
-    private static final int RADIUS = 5;
+    private static final int RADIUS = 3;
 
     public BulletDisplay(Color color) {
         this.shapeRenderer = new ShapeRenderer();
@@ -17,8 +17,8 @@ public class BulletDisplay extends Actor {
 
     public static BulletDisplay centeredAt(float x, float y, Color color) {
         BulletDisplay result = new BulletDisplay(color);
-        result.setWidth(RADIUS * 2);
-        result.setHeight(RADIUS * 2);
+        result.setWidth(RADIUS*2);
+        result.setHeight(RADIUS*2);
         result.setX(x - RADIUS);
         result.setY(y - RADIUS);
         return result;
@@ -34,10 +34,10 @@ public class BulletDisplay extends Actor {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
         shapeRenderer.setColor(0, 0, 0, parentAlpha);
-        shapeRenderer.circle(RADIUS, RADIUS, RADIUS);
+        shapeRenderer.circle(getWidth()/2, getHeight()/2, getWidth());
 
         shapeRenderer.setColor(color.getR(), color.getG(), color.getB(), parentAlpha);
-        shapeRenderer.circle(RADIUS, RADIUS, RADIUS - 2);
+        shapeRenderer.circle(getWidth()/2, getHeight()/2, getWidth() - 2);
 
         shapeRenderer.end();
 
