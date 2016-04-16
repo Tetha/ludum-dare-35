@@ -21,9 +21,9 @@ public class BulletDisplay extends Actor {
         result.setHeight(RADIUS * 2);
         result.setX(x - RADIUS);
         result.setY(y - RADIUS);
-        result.setDebug(true);
         return result;
     }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.end();

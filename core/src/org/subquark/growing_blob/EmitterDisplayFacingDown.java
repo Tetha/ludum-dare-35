@@ -46,7 +46,7 @@ public class EmitterDisplayFacingDown extends Actor {
         batch.begin();
     }
 
-    public void onFired() {
+    public void onBulletFired(int rowsTravelled, int columnsTravelled) {
         float totalEmitterWidth = getWidth() - MARGIN;
         float barrelWidth = (getHeight() - MARGIN) / 3;
 
@@ -58,26 +58,26 @@ public class EmitterDisplayFacingDown extends Actor {
 
             Vector2 localBulletCoordinates = new Vector2(centerOfFirstBarrel, fireY);
             Vector2 parentCoords = localToParentCoordinates(localBulletCoordinates);
-            Vector2 targetCoords = localToParentCoordinates(new Vector2(centerOfFirstBarrel, -300));
+            Vector2 targetCoords = localToParentCoordinates(new Vector2(centerOfFirstBarrel, -50*columnsTravelled));
 
             BulletDisplay newBullet = BulletDisplay.centeredAt(parentCoords.x, parentCoords.y, emitter.getColor());
             getParent().addActor(newBullet);
             newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, 2),
-                                         removeActor()));
+                    removeActor()));
         }
 
         if (emitter.getLevel() >= 2) {
-            float startOfSecondBarrel = 1 + MARGIN +     totalEmitterWidth / 3;
+            float startOfSecondBarrel = 1 + MARGIN + totalEmitterWidth / 3;
             float centerOfSecondBarrel = startOfSecondBarrel + barrelWidth / 2;
 
             Vector2 localBulletCoordinates = new Vector2(centerOfSecondBarrel, fireY);
             Vector2 parentCoords = localToParentCoordinates(localBulletCoordinates);
-            Vector2 targetCoords = localToParentCoordinates(new Vector2(centerOfSecondBarrel, -300));
+            Vector2 targetCoords = localToParentCoordinates(new Vector2(centerOfSecondBarrel, -50*columnsTravelled));
 
             BulletDisplay newBullet = BulletDisplay.centeredAt(parentCoords.x, parentCoords.y, emitter.getColor());
             getParent().addActor(newBullet);
             newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, 2),
-                                          removeActor()));
+                    removeActor()));
         }
 
         if (emitter.getLevel() >= 3) {
@@ -87,12 +87,12 @@ public class EmitterDisplayFacingDown extends Actor {
             Vector2 localBulletCoordinates = new Vector2(centerOfThirdBarrel, fireY);
             Vector2 parentCoords = localToParentCoordinates(localBulletCoordinates);
 
-            Vector2 targetCoords = localToParentCoordinates(new Vector2(centerOfThirdBarrel, -300));
+            Vector2 targetCoords = localToParentCoordinates(new Vector2(centerOfThirdBarrel, -50*columnsTravelled));
 
             BulletDisplay newBullet = BulletDisplay.centeredAt(parentCoords.x, parentCoords.y, emitter.getColor());
             getParent().addActor(newBullet);
             newBullet.addAction(sequence(moveTo(targetCoords.x, targetCoords.y, 2),
-                                         removeActor()));
+                    removeActor()));
         }
     }
 }

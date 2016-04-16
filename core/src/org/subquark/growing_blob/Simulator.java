@@ -12,6 +12,9 @@ public class Simulator {
 
     public void simulateTurn() {
         handleLeftEmitters();
+        handleRightEmitters();
+        handleTopEmitters();
+        handleBottomEmitters();
     }
 
     private void handleLeftEmitters() {
@@ -33,6 +36,67 @@ public class Simulator {
             }
         }
     }
+
+    private void handleRightEmitters() {
+        for(Emitter emitter : rightEmitters) {
+            int row  = emitter.getRow();
+            int collidedCol = -1;
+
+            for ( int column = 5; 0 <= column; column --) {
+                Cell cell = getCell(row, column);
+                if (!cell.isEmpty() ) {
+                    System.out.println("Collision!");
+                    collidedCol = column;
+                    break;
+                }
+            }
+
+            if (collidedCol == -1) {
+                emitter.fireBullet(7, 0);
+            }
+        }
+    }
+
+    private void handleTopEmitters() {
+        for(Emitter emitter : topEmitters) {
+            int col  = emitter.getColumn();
+            int collidedRow = -1;
+
+            for ( int row = 5; 0 <= row; row --) {
+                Cell cell = getCell(row, col);
+                if (!cell.isEmpty() ) {
+                    System.out.println("Collision!");
+                    collidedRow = row;
+                    break;
+                }
+            }
+
+            if (collidedRow == -1) {
+                emitter.fireBullet(0, 7);
+            }
+        }
+    }
+
+    private void handleBottomEmitters() {
+        for(Emitter emitter : bottomEmitters) {
+            int col  = emitter.getColumn();
+            int collidedRow = -1;
+
+            for ( int row = 0; row < 6; row ++) {
+                Cell cell = getCell(row, col);
+                if (!cell.isEmpty() ) {
+                    System.out.println("Collision!");
+                    collidedRow = row;
+                    break;
+                }
+            }
+
+            if (collidedRow == -1) {
+                emitter.fireBullet(0, 7);
+            }
+        }
+    }
+
 
     private Cell getCell(int row, int column) {
         return rcCells.get(row).get(column);
