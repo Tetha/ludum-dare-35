@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class GrowingBlobGame extends ApplicationAdapter {
     @Override
 	public void create () {
         r = new Random(42);
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(new StretchViewport(800, 480));
         Gdx.input.setInputProcessor(stage);
 
         createCellDisplays();
@@ -319,6 +320,11 @@ public class GrowingBlobGame extends ApplicationAdapter {
                 rowGroup.addActor(display);
             }
         }
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height);
     }
 
 	@Override
