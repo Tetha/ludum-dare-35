@@ -18,7 +18,7 @@ public class World {
     private int callbacksSubmitted;
 
     private int playerBuildPoints = 30;
-    private int playerScore = 75;
+    private int playerScore = 0;
 
     private int turnsSimulated = 0;
     private boolean isSimulating;
