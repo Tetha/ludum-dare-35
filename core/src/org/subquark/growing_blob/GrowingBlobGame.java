@@ -22,7 +22,6 @@ public class GrowingBlobGame extends ApplicationAdapter {
 
     private World simulator = new World();
 
-    private List<EmitterDisplayFacingDown> firedEmitters;
     private ShopGroup shop;
     private Random r;
 
@@ -215,7 +214,6 @@ public class GrowingBlobGame extends ApplicationAdapter {
 
     private void createTopEmitters(Random r) {
         Group topEmitterDisplays = new Group();
-        firedEmitters = new ArrayList<>();
         List<Emitter> topEmitters = new ArrayList();
         simulator.setTopEmitters(topEmitters);
 
