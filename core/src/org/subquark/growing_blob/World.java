@@ -44,6 +44,7 @@ public class World {
 
     private void createNewEmitter() {
         List<Emitter> nonSetupEmitters = allEmitterStream().filter(e -> !e.isSetup()).collect(Collectors.toList());
+        if (nonSetupEmitters.isEmpty()) return;
         Emitter createdEmitter = nonSetupEmitters.get(r.nextInt(nonSetupEmitters.size()));
         EmitterColor emitterColor = EmitterColor.values()[r.nextInt(EmitterColor.values().length)];
 
@@ -54,6 +55,8 @@ public class World {
 
     private void upgradeExistingEmitter() {
         List<Emitter> existingUpgradableEmitters = allEmitterStream().filter(e -> e.isSetup() && e.getLevel() < 3).collect(Collectors.toList());
+        if (existingUpgradableEmitters.isEmpty()) return;
+
         Emitter upgradedEmitter = existingUpgradableEmitters.get(r.nextInt(existingUpgradableEmitters.size()));
         upgradedEmitter.increaseLevel();
     }
