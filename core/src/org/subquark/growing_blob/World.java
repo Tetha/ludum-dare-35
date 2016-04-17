@@ -131,7 +131,7 @@ public class World {
                         maybeUpgradeEmitters();
                         finishSimulating();
                     }
-                }, 1f);
+                }, 0.5f);
             }
         };
     }
