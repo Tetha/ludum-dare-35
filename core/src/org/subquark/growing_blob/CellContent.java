@@ -7,6 +7,9 @@ public abstract class CellContent {
     private int energy;
     private int incomingEnergy;
 
+    private Runnable scoreGeneratedObserver;
+    private Runnable buildPointGainedObserver;
+
     protected CellContent(CellContentType type) {
         this.type = type;
     }
@@ -64,5 +67,21 @@ public abstract class CellContent {
 
     public void setCell(Cell cell) {
         this.cell = cell;
+    }
+
+    public void setScoreGeneratedObserver(Runnable scoreGeneratedObserver) {
+        this.scoreGeneratedObserver = scoreGeneratedObserver;
+    }
+
+    public void setBuildPointGainedObserver(Runnable buildPointGainedObserver) {
+        this.buildPointGainedObserver = buildPointGainedObserver;
+    }
+
+    protected void notifyScoreProduced() {
+        if (this.buildPointGainedObserver != null) this.buildPointGainedObserver.run();
+    }
+
+    protected void notifyBuildPointProduced() {
+        if (this.buildPointGainedObserver != null) this.buildPointGainedObserver.run();
     }
 }
