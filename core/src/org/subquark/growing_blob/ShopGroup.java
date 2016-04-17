@@ -10,6 +10,7 @@ public class ShopGroup extends Group {
     private Label cost;
     private Label description;
     private SelectBox<String> items;
+    private CellContentMarker marker;
 
     public ShopGroup(Skin uiSkin) {
         table = new Table();
@@ -29,6 +30,11 @@ public class ShopGroup extends Group {
         cost = new Label("Cost: ?", uiSkin);
         table.add(cost).expand().left();
 
+        marker = new CellContentMarker();
+        marker.setWidth(40);
+        marker.setHeight(40);
+        table.add(marker).expand().right();
+
         table.row();
         description = new Label("", uiSkin);
         table.add(description).expand().left().top();
@@ -39,6 +45,7 @@ public class ShopGroup extends Group {
         super.act(delta);
 
         CellContentType selectedType = getSelectedCellType();
+        marker.setType(selectedType);
 
         cost.setText("Cost: " + selectedType.getCost());
         description.setText(selectedType.getDescription());

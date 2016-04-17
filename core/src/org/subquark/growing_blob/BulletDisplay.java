@@ -6,16 +6,16 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class BulletDisplay extends Actor {
     private final ShapeRenderer shapeRenderer;
-    private final Color color;
+    private final EmitterColor color;
 
     private static final int RADIUS = 3;
 
-    public BulletDisplay(Color color) {
+    public BulletDisplay(EmitterColor color) {
         this.shapeRenderer = new ShapeRenderer();
         this.color = color;
     }
 
-    public static BulletDisplay centeredAt(float x, float y, Color color) {
+    public static BulletDisplay centeredAt(float x, float y, EmitterColor color) {
         BulletDisplay result = new BulletDisplay(color);
         result.setWidth(RADIUS*2);
         result.setHeight(RADIUS*2);

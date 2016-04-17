@@ -1,12 +1,8 @@
 package org.subquark.growing_blob;
 
-import javax.management.Notification;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Emitter {
     private boolean isSetup;
-    private Color color;
+    private EmitterColor color;
     private int level;
 
     private int row;
@@ -23,11 +19,11 @@ public class Emitter {
         isSetup = value;
     }
 
-    public Color getColor() {
+    public EmitterColor getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(EmitterColor color) {
         this.color = color;
     }
 

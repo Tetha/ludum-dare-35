@@ -1,9 +1,7 @@
 package org.subquark.growing_blob;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -51,7 +49,7 @@ public class CellDisplay extends Group {
     public void onEnergyTransferTowardsRight() {
         BulletDisplay energyBullet = BulletDisplay.centeredAt(
                 getWidth() - 10,
-                getHeight() / 2 + r.nextFloat() * getHeight() / 2 - getHeight() / 4, Color.YELLOW
+                getHeight() / 2 + r.nextFloat() * getHeight() / 2 - getHeight() / 4, EmitterColor.YELLOW
         );
 
         energyBullet.setWidth(4);
@@ -66,7 +64,7 @@ public class CellDisplay extends Group {
     public void onEnergyTransferTowardsLeft() {
         BulletDisplay energyBullet = BulletDisplay.centeredAt(
                 10,
-                getHeight() / 2 + r.nextFloat() * getHeight() / 2 - getHeight() / 4, Color.YELLOW
+                getHeight() / 2 + r.nextFloat() * getHeight() / 2 - getHeight() / 4, EmitterColor.YELLOW
         );
 
         energyBullet.setWidth(4);
@@ -83,7 +81,7 @@ public class CellDisplay extends Group {
         BulletDisplay energyBullet = BulletDisplay.centeredAt(
                 getWidth() / 2 + r.nextFloat() * getWidth() / 2 - getWidth() / 4,
                 10,
-                Color.YELLOW
+                EmitterColor.YELLOW
         );
 
         energyBullet.setWidth(4);
@@ -99,7 +97,7 @@ public class CellDisplay extends Group {
         BulletDisplay energyBullet = BulletDisplay.centeredAt(
                 getWidth() / 2 + r.nextFloat() * getWidth() / 2 - getWidth() / 4,
                 getHeight() - 10,
-                Color.YELLOW
+                EmitterColor.YELLOW
         );
 
         energyBullet.setWidth(4);
