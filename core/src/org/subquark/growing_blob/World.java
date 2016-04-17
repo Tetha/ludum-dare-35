@@ -1,8 +1,13 @@
 package org.subquark.growing_blob;
 
 import com.badlogic.gdx.utils.Timer;
+import com.sun.imageio.spi.InputStreamImageInputStreamSpi;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class World {
     private List<Emitter> leftEmitters;
@@ -16,7 +21,44 @@ public class World {
 
     private int playerBuildPoints = 0;
 
+    private int turnsSimulated = 0;
     private boolean isSimulating;
+
+    private Random r;
+
+    private static final int TURNS_PER_EMITTER = 3;
+
+    public void improveEmitters() {
+        int chance = r.nextInt(10);
+        if (chance < 2) {
+            upgradeExistingEmitter();;
+        } else {
+            createNewEmitter();
+        }
+    }
+
+    private void createNewEmitter() {
+        List<Emitter> nonSetupEmitters = allEmitterStream().filter(e -> !e.isSetup()).collect(Collectors.toList());
+        Emitter createdEmitter = nonSetupEmitters.get(r.nextInt(nonSetupEmitters.size()));
+        Color emitterColor = Color.values()[r.nextInt(Color.values().length)];
+
+        createdEmitter.setLevel(1);
+        createdEmitter.setIsSetup(true);
+        createdEmitter.setColor(emitterColor);
+    }
+
+    private void upgradeExistingEmitter() {
+        List<Emitter> existingUpgradableEmitters = allEmitterStream().filter(e -> e.isSetup() && e.getLevel() < 3).collect(Collectors.toList());
+        Emitter upgradedEmitter = existingUpgradableEmitters.get(r.nextInt(existingUpgradableEmitters.size()));
+        upgradedEmitter.increaseLevel();
+    }
+
+    private Stream<Emitter> allEmitterStream() {
+        return Stream.concat(
+            Stream.concat(leftEmitters.stream(), rightEmitters.stream()),
+            Stream.concat(topEmitters.stream(), bottomEmitters.stream())
+        );
+    }
 
     public void simulateTurn() {
         if (callbacksSubmitted != 0) {
@@ -37,6 +79,7 @@ public class World {
     }
 
     private void finishSimulating() {
+        turnsSimulated++;
         isSimulating = false;
     }
 
@@ -79,11 +122,18 @@ public class World {
                     public void run() {
                         tickCells();
                         commitAllCells();
+                        maybeUpgradeEmitters();
                         finishSimulating();
                     }
                 }, 2f);
             }
         };
+    }
+
+    private void maybeUpgradeEmitters() {
+        if (turnsSimulated > 0 && turnsSimulated % TURNS_PER_EMITTER == 0) {
+            improveEmitters();
+        }
     }
     private void commitAllCells() {
         for (List<Cell> row : rcCells) {
@@ -238,5 +288,13 @@ public class World {
 
     public void setRcCells(List<List<Cell>> rcCells) {
         this.rcCells = rcCells;
+    }
+
+    public Random getR() {
+        return r;
+    }
+
+    public void setRandom(Random r) {
+        this.r = r;
     }
 }
