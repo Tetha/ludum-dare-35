@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.function.Function;
 
 public enum CellContentType {
-    PARTICLE_ABSORBER(10, 3,
+    PARTICLE_ABSORBER(10, 5,
                       "Particle Absorber",
             "The particle absorber collects\n"
            + "the particles Those are these\n"
@@ -18,7 +18,7 @@ public enum CellContentType {
            + "in one turn",
             new Color(0.8f, 0.2f, 0.2f, 1f),
             ParticleAbsorber::new),
-    ROUTER(5, 10, "Energy Router",
+    ROUTER(5, 20, "Energy Router",
             "The energy router moves energy\n"
           + "around Each turn, the router\n"
           + "pushes up to 5 energy to random\n"

@@ -33,7 +33,7 @@ public class ParticleAbsorber extends CellContent {
         if (isEnergyAcceptingNeighbour(eastNeighbour)) acceptingNeighbours.add(eastNeighbour.getContent());
         if (isEnergyAcceptingNeighbour(westNeighbour)) acceptingNeighbours.add(westNeighbour.getContent());
 
-        int transferCapacity = 3;
+        int transferCapacity = 5;
         while (getEnergy() > 0 && transferCapacity > 0 && acceptingNeighbours.size() > 0 ) {
             int idx = r.nextInt(acceptingNeighbours.size());
             CellContent target = acceptingNeighbours.get(idx);
