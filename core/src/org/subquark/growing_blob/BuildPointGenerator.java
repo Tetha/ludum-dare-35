@@ -15,7 +15,7 @@ public class BuildPointGenerator extends CellContent {
             return;
         }
 
-        for (int i = getEnergy(); i >= 0; i--) notifyScoreProduced();
+        for (int i = getEnergy(); i >= 0; i--) notifyBuildPointProduced();
         getCell().getWorld().addPlayerBuildPoints(this.getEnergy());
         this.setEnergy(0);
     }
