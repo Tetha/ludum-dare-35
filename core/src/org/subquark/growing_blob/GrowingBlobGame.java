@@ -22,6 +22,7 @@ public class GrowingBlobGame extends ApplicationAdapter {
 	public void create () {
         Random r = new Random(42);
 		stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
 
         createCellDisplays();
         createLeftEmitters(r);
@@ -38,6 +39,14 @@ public class GrowingBlobGame extends ApplicationAdapter {
         buildPointDisplay.setHeight(50);
         buildPointDisplay.setWidth(150);
         buildPointDisplay.setDebug(true);
+
+        ShopGroup shop = new ShopGroup(uiSkin);
+        stage.addActor(shop);
+        shop.setX(400);
+        shop.setY(0);
+        shop.setHeight(400);
+        shop.setWidth(200);
+        shop.setDebug(true);
 
         Emitter testEmitter = simulator.getLeftEmitters().get(3);
         testEmitter.setColor(Color.YELLOW);
@@ -71,9 +80,10 @@ public class GrowingBlobGame extends ApplicationAdapter {
 
         Cell builderCell = simulator.getCell(0, 4);
         builderCell.setCellContent(new BuildPointGenerator());
+    }
 
-
-
+    private void buyStuffFor(Cell c) {
+        System.out.println("Buy stuff for cell in " + c.getRow() + "/" + c.getCol());
     }
 
     private void createBottomEmitters(Random r) {
@@ -204,6 +214,7 @@ public class GrowingBlobGame extends ApplicationAdapter {
                 display.setX(col * 50);
                 display.setWidth(50);
                 display.setHeight(50);
+                display.setCellClickObserver(this::buyStuffFor);
                 rowGroup.addActor(display);
             }
         }

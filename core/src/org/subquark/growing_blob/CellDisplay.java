@@ -2,9 +2,13 @@ package org.subquark.growing_blob;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.Random;
+import java.util.function.Consumer;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
@@ -15,6 +19,8 @@ public class CellDisplay extends Group {
     private CellBackgroundDisplay background;
 
     private static final int TRANSFER_DISTANCE = 20;
+
+    private Consumer<Cell> cellClickObserver;
 
     public CellDisplay(Cell displayedCell) {
         r = new Random();
@@ -34,6 +40,12 @@ public class CellDisplay extends Group {
         meter.setX(10);
         meter.setY(10);
         this.addActor(meter);
+
+        this.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                cellClickObserver.accept(cell);
+            }
+        });
     }
 
     public void onEnergyTransferTowardsRight() {
@@ -106,5 +118,9 @@ public class CellDisplay extends Group {
         } else {
             return cell.getContent().getEnergy();
         }
+    }
+
+    public void setCellClickObserver(Consumer<Cell> cellClickObserver) {
+        this.cellClickObserver = cellClickObserver;
     }
 }
