@@ -104,16 +104,6 @@ public class GrowingBlobGame extends ApplicationAdapter {
         testEmitter.setIsSetup(true);
         testEmitter.setLevel(1);
 
-        Emitter speedTestEmitter = simulator.getRightEmitters().get(4);
-        speedTestEmitter.setColor(EmitterColor.BLUE);
-        speedTestEmitter.setIsSetup(true);
-        speedTestEmitter.setLevel(2);
-
-        Emitter noiseEmitter = simulator.getBottomEmitters().get(2);
-        noiseEmitter.setColor(EmitterColor.RED);
-        noiseEmitter.setIsSetup(true);
-        noiseEmitter.setLevel(3);
-
         Cell testCell = simulator.getCell(3, 2);
         testCell.setCellContent(new ParticleAbsorber(r));
 
