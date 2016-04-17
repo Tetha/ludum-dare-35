@@ -24,7 +24,7 @@ public class PlusSign extends Actor {
         shapeRenderer.rect(0, getHeight()/3, getWidth(), getHeight()/3);
         shapeRenderer.rect(getWidth()/3, 0, getWidth()/3, getHeight());
 
-        shapeRenderer.setColor(getColor());
+        shapeRenderer.setColor(getColor().r, getColor().g, getColor().b, parentAlpha);
         shapeRenderer.rect(0 + 1, getHeight()/3 + 1, getWidth() - 2, getHeight()/3 - 2);
         shapeRenderer.rect(getWidth()/3 + 1, 0 + 1, getWidth()/3 - 2, getHeight() - 2);
 

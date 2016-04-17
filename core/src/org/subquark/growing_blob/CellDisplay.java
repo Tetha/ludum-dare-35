@@ -116,14 +116,14 @@ public class CellDisplay extends Group {
     public void onScoreProduced() {
         PlusSign particle = new PlusSign();
 
-        float startX = r.nextFloat()*getWidth();
-        float startY = r.nextFloat()*getHeight();
+        float startX = r.nextFloat()*getWidth()*0.5f;
+        float startY = r.nextFloat()*getHeight()*0.5f;
 
         float height = r.nextFloat() * 40;
 
-        particle.setColor(Color.YELLOW);
-        particle.setX(startX);
-        particle.setY(startY);
+        particle.setColor(cell.getContent().getType().getBackgroundColor());
+        particle.setX(getWidth()*0.25f + startX);
+        particle.setY(getWidth()*0.25f + startY);
         particle.setWidth(10);
         particle.setHeight(10);
 
@@ -138,21 +138,21 @@ public class CellDisplay extends Group {
     public void onBuildPointProduced() {
         PlusSign particle = new PlusSign();
 
-        float startX = r.nextFloat()*getWidth();
-        float startY = r.nextFloat()*getHeight();
+        float startX = r.nextFloat()*getWidth()*0.5f;
+        float startY = r.nextFloat()*getHeight()*0.5f;
 
         float height = r.nextFloat() * 40;
 
-        particle.setColor(Color.RED);
-        particle.setX(startX);
-        particle.setY(startY);
+        particle.setColor(cell.getContent().getType().getBackgroundColor());
+        particle.setX(getWidth()*0.25f + startX);
+        particle.setY(getWidth()*0.25f + startY);
         particle.setWidth(10);
         particle.setHeight(10);
 
         this.addActor(particle);
 
         particle.addAction(sequence(
-                Actions.moveBy(0, height, 0.5f),
+                Actions.moveBy(0, height, 0.3f),
                 Actions.removeActor()
         ));
     }
