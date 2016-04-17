@@ -315,4 +315,8 @@ public class World {
     public int getTurnNumber() {
         return turnsSimulated;
     }
+
+    public int getSimulatedTurns() {
+        return turnsSimulated;
+    }
 }

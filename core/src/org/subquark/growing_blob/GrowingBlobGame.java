@@ -27,6 +27,8 @@ public class GrowingBlobGame extends ApplicationAdapter {
     private Random r;
 
     private Label simulationStatus;
+    private Label turnCounter;
+
     private TextButton skipButton;
 
     private Group needMoreMoneyDisplay;
@@ -67,6 +69,13 @@ public class GrowingBlobGame extends ApplicationAdapter {
         display.setWidth(100);
         display.setHeight(50);
         stage.addActor(display);
+
+        turnCounter = new Label("-", uiSkin);
+        turnCounter.setX(675);
+        turnCounter.setY(420);
+        turnCounter.setWidth(50);
+        turnCounter.setHeight(50);
+        stage.addActor(turnCounter);
 
         skipButton = new TextButton("Simulate", uiSkin);
         stage.addActor(skipButton);
@@ -334,6 +343,7 @@ public class GrowingBlobGame extends ApplicationAdapter {
         } else {
             simulationStatus.setText("Waiting...");
         }
+        turnCounter.setText("Turn: " + simulator.getSimulatedTurns());
 		stage.draw();
 	}
 }
