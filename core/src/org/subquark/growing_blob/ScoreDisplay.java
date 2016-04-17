@@ -11,6 +11,8 @@ public class ScoreDisplay extends Group {
 
     private Label heading;
     private Label points;
+    private final PlusSign plusDecal;
+
     private final ScoreBar firstBar;
     private final ScoreBar secondBar;
     private final ScoreBar thirdBar;
@@ -25,6 +27,14 @@ public class ScoreDisplay extends Group {
         points = new Label("42", uiSkin);
         points.setX(50);
         points.setY(30);
+
+        plusDecal = new PlusSign();
+        plusDecal.setColor(CellContentType.SCORE_GENERATOR.getBackgroundColor());
+        plusDecal.setX(40);
+        plusDecal.setY(37);
+        plusDecal.setWidth(10);
+        plusDecal.setHeight(10);
+        addActor(plusDecal);
 
         firstBar = new ScoreBar(0, maxForFirstGroup,scoreGetter);
         firstBar.setWidth(getWidth());
