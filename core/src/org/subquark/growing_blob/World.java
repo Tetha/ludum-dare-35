@@ -1,9 +1,7 @@
 package org.subquark.growing_blob;
 
 import com.badlogic.gdx.utils.Timer;
-import com.sun.imageio.spi.InputStreamImageInputStreamSpi;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -27,12 +25,18 @@ public class World {
 
     private Random r;
 
-    private static final int TURNS_PER_EMITTER = 3;
+    private int getTurnsPerEmitter() {
+        if (turnsSimulated < 20) {
+            return 3;
+        } else {
+            return 2;
+        }
+    }
 
     public void improveEmitters() {
         int chance = r.nextInt(10);
-        if (chance < 2) {
-            upgradeExistingEmitter();;
+        if (chance < 3) {
+            upgradeExistingEmitter();
         } else {
             createNewEmitter();
         }
@@ -41,7 +45,7 @@ public class World {
     private void createNewEmitter() {
         List<Emitter> nonSetupEmitters = allEmitterStream().filter(e -> !e.isSetup()).collect(Collectors.toList());
         Emitter createdEmitter = nonSetupEmitters.get(r.nextInt(nonSetupEmitters.size()));
-        Color emitterColor = Color.values()[r.nextInt(Color.values().length)];
+        EmitterColor emitterColor = EmitterColor.values()[r.nextInt(EmitterColor.values().length)];
 
         createdEmitter.setLevel(1);
         createdEmitter.setIsSetup(true);
@@ -121,6 +125,7 @@ public class World {
             if (callbacksSubmitted == 0) {
                 Timer.schedule(new Timer.Task() {
                     public void run() {
+                        commitAllCells();
                         tickCells();
                         commitAllCells();
                         maybeUpgradeEmitters();
@@ -132,7 +137,7 @@ public class World {
     }
 
     private void maybeUpgradeEmitters() {
-        if (turnsSimulated > 0 && turnsSimulated % TURNS_PER_EMITTER == 0) {
+        if (turnsSimulated > 0 && turnsSimulated % getTurnsPerEmitter() == 0) {
             improveEmitters();
         }
     }
@@ -305,5 +310,9 @@ public class World {
 
     public void addPlayerScore(int score) {
         this.playerScore += score;
+    }
+
+    public int getTurnNumber() {
+        return turnsSimulated;
     }
 }
