@@ -196,6 +196,10 @@ public class World {
         this.playerBuildPoints += energy;
     }
 
+    public void reducePlayerBuildPointsBy(int cost) {
+        playerBuildPoints -= cost;
+    }
+
     public List<Emitter> getLeftEmitters() {
         return leftEmitters;
     }

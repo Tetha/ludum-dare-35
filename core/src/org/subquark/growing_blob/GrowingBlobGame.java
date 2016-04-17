@@ -3,9 +3,13 @@ package org.subquark.growing_blob;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.ArrayList;
@@ -21,6 +25,9 @@ public class GrowingBlobGame extends ApplicationAdapter {
     private ShopGroup shop;
     private Random r;
 
+    private Label simulationStatus;
+    private TextButton skipButton;
+
     @Override
 	public void create () {
         r = new Random(42);
@@ -35,6 +42,11 @@ public class GrowingBlobGame extends ApplicationAdapter {
 
         Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
 
+        simulationStatus = new Label("-", uiSkin);
+        stage.addActor(simulationStatus);
+        simulationStatus.setX(0);
+        simulationStatus.setY(450);
+
         BuildPointDisplay buildPointDisplay = new BuildPointDisplay(uiSkin, simulator::getPlayerBuildPoints);
         stage.addActor(buildPointDisplay);
         buildPointDisplay.setX(400);
@@ -43,13 +55,23 @@ public class GrowingBlobGame extends ApplicationAdapter {
         buildPointDisplay.setWidth(150);
         buildPointDisplay.setDebug(true);
 
+        skipButton = new TextButton("Simulate", uiSkin);
+        stage.addActor(skipButton);
+        skipButton.setX(400);
+        skipButton.setY(350);
+        skipButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (!simulator.isSimulating()) simulator.simulateTurn();
+            }
+        });
+
         shop = new ShopGroup(uiSkin);
         stage.addActor(shop);
         shop.setX(400);
         shop.setY(0);
-        shop.setHeight(400);
+        shop.setHeight(350);
         shop.setWidth(200);
-        shop.setDebug(true);
 
         Emitter testEmitter = simulator.getLeftEmitters().get(3);
         testEmitter.setColor(Color.YELLOW);
@@ -72,16 +94,7 @@ public class GrowingBlobGame extends ApplicationAdapter {
         Cell routerCell = simulator.getCell(3, 3);
         routerCell.setCellContent(new EnergyRouter(r));
 
-        routerCell = simulator.getCell(2, 3);
-        routerCell.setCellContent(new EnergyRouter(r));
-
-        routerCell = simulator.getCell(1, 3);
-        routerCell.setCellContent(new EnergyRouter(r));
-
-        routerCell = simulator.getCell(0, 3);
-        routerCell.setCellContent(new EnergyRouter(r));
-
-        Cell builderCell = simulator.getCell(0, 4);
+        Cell builderCell = simulator.getCell(2, 3);
         builderCell.setCellContent(CellContentType.BUILD_POINT_GENERATOR.instantiate(r));
     }
 
@@ -90,8 +103,10 @@ public class GrowingBlobGame extends ApplicationAdapter {
             return;
         }
         CellContentType selectedType = shop.getSelectedCellType();
-        c.setCellContent(selectedType.instantiate(r));
-        simulator.simulateTurn();
+        if (simulator.getPlayerBuildPoints() >= selectedType.getCost()) {
+            c.setCellContent(selectedType.instantiate(r));
+            simulator.reducePlayerBuildPointsBy(selectedType.getCost());
+        }
     }
 
     private void createBottomEmitters(Random r) {
@@ -228,13 +243,18 @@ public class GrowingBlobGame extends ApplicationAdapter {
         }
     }
 
-    private float timeSinceFired = 40f;
 	@Override
 	public void render () {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(Gdx.graphics.getDeltaTime());
+
+        if (simulator.isSimulating()) {
+            simulationStatus.setText("Simulating...");
+        } else {
+            simulationStatus.setText("Waiting...");
+        }
 		stage.draw();
 	}
 }
