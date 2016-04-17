@@ -19,6 +19,8 @@ public abstract class CellContent {
         return energy;
     }
 
+    public int getEnergyForDisplay() { return energy + incomingEnergy; }
+
     public void addEnergy(int amount) {
         this.incomingEnergy += amount;
 
@@ -37,7 +39,7 @@ public abstract class CellContent {
     }
 
     public void commitEnergy() {
-        this.energy = incomingEnergy;
+        this.energy += incomingEnergy;
         incomingEnergy = 0;
         if (this.energy > type.getMaxEnergy()) this.energy = type.getMaxEnergy();
     }
@@ -51,7 +53,7 @@ public abstract class CellContent {
     }
 
     public boolean canAcceptMoreEnergy() {
-        return this.energy < type.getMaxEnergy();
+        return this.energy + this.incomingEnergy < type.getMaxEnergy();
     }
 
     public abstract void tick();

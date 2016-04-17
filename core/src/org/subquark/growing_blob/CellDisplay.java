@@ -114,7 +114,7 @@ public class CellDisplay extends Group {
         if (cell.getContent() == null) {
             return 0;
         } else {
-            return cell.getContent().getEnergy();
+            return cell.getContent().getEnergyForDisplay();
         }
     }
 

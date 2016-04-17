@@ -37,7 +37,8 @@ public class GrowingBlobGame extends ApplicationAdapter {
 
     @Override
 	public void create () {
-        r = new Random(42);
+        r = new Random();
+        simulator.setRandom(r);
         stage = new Stage(new StretchViewport(800, 480));
         Gdx.input.setInputProcessor(stage);
 
