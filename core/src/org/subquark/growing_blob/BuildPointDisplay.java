@@ -14,6 +14,7 @@ public class BuildPointDisplay extends Group {
     private Label heading;
     private Label points;
     private Supplier<Integer> buildPointSupplier;
+    private PlusSign plusDecal;
 
     public BuildPointDisplay(Skin uiSkin, Supplier<Integer> buildpointSupplier) {
         this.buildPointSupplier = buildpointSupplier;
@@ -25,6 +26,14 @@ public class BuildPointDisplay extends Group {
         heading = new Label("Buildpoints", uiSkin);
         heading.setX(0);
         heading.setY(25);
+
+        plusDecal = new PlusSign();
+        plusDecal.setColor(CellContentType.BUILD_POINT_GENERATOR.getBackgroundColor());
+        plusDecal.setX(85);
+        plusDecal.setY(32);
+        plusDecal.setWidth(10);
+        plusDecal.setHeight(10);
+        addActor(plusDecal);
 
         points = new Label("42", uiSkin);
         points.setX(0);
