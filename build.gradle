@@ -10,7 +10,7 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    version = '1.0'
+    version = '1.1'
     ext {
         appName = 'growing-blob'
         gdxVersion = '1.4.1'
