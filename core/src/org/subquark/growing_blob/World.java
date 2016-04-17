@@ -19,7 +19,8 @@ public class World {
 
     private int callbacksSubmitted;
 
-    private int playerBuildPoints = 0;
+    private int playerBuildPoints = 30;
+    private int playerScore = 0;
 
     private int turnsSimulated = 0;
     private boolean isSimulating;
@@ -125,7 +126,7 @@ public class World {
                         maybeUpgradeEmitters();
                         finishSimulating();
                     }
-                }, 2f);
+                }, 1f);
             }
         };
     }
@@ -299,6 +300,10 @@ public class World {
     }
 
     public int getPlayerScore() {
-        return 450;
+        return playerScore;
+    }
+
+    public void addPlayerScore(int score) {
+        this.playerScore += score;
     }
 }
