@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -28,10 +29,13 @@ public class GrowingBlobGame extends ApplicationAdapter {
     private Label simulationStatus;
     private TextButton skipButton;
 
+    private Group needMoreMoneyDisplay;
+    private Group currentlySimulatingDisplay;
+
     @Override
 	public void create () {
         r = new Random(42);
-		stage = new Stage(new ScreenViewport());
+        stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
         createCellDisplays();
@@ -46,6 +50,9 @@ public class GrowingBlobGame extends ApplicationAdapter {
         stage.addActor(simulationStatus);
         simulationStatus.setX(0);
         simulationStatus.setY(450);
+
+        createNotEnoughMoneyDisplay(uiSkin);
+        createCurrentlySimulatingDisplay(uiSkin);
 
         BuildPointDisplay buildPointDisplay = new BuildPointDisplay(uiSkin, simulator::getPlayerBuildPoints);
         stage.addActor(buildPointDisplay);
@@ -62,7 +69,11 @@ public class GrowingBlobGame extends ApplicationAdapter {
         skipButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (!simulator.isSimulating()) simulator.simulateTurn();
+                if (simulator.isSimulating()) {
+                    showCurrentlySimulatingError();
+                } else {
+                    simulator.simulateTurn();
+                }
             }
         });
 
@@ -98,14 +109,76 @@ public class GrowingBlobGame extends ApplicationAdapter {
         builderCell.setCellContent(CellContentType.BUILD_POINT_GENERATOR.instantiate(r));
     }
 
+    private void showCurrentlySimulatingError() {
+        currentlySimulatingDisplay.addAction(
+                Actions.sequence(
+                        Actions.moveTo(110, 425),
+                        Actions.visible(true),
+                        Actions.moveBy(-25, 0, 0.25f),
+                        Actions.delay(0.25f),
+                        Actions.visible(false)
+                )
+        );
+    }
+    private void createCurrentlySimulatingDisplay(Skin uiSkin) {
+        currentlySimulatingDisplay = new Group();
+        stage.addActor(currentlySimulatingDisplay);
+
+        ArrowPointingLeft arrow = new ArrowPointingLeft();
+        arrow.setColor(com.badlogic.gdx.graphics.Color.RED);
+        arrow.setWidth(50);
+        arrow.setHeight(25);
+        arrow.setX(0);
+        arrow.setY(15);
+        currentlySimulatingDisplay.addActor(arrow);
+
+        Label complaint = new Label("Currently working\nPlease wait!!", uiSkin);
+        complaint.setX(50);
+        currentlySimulatingDisplay.addActor(complaint);
+
+        currentlySimulatingDisplay.setVisible(false);
+    }
+
+    private void createNotEnoughMoneyDisplay(Skin uiSkin) {
+        needMoreMoneyDisplay = new Group();
+        stage.addActor(needMoreMoneyDisplay);
+        needMoreMoneyDisplay.setX(250);
+        needMoreMoneyDisplay.setY(400);
+
+        ArrowPointingRight arrow = new ArrowPointingRight();
+        arrow.setColor(com.badlogic.gdx.graphics.Color.RED);
+        arrow.setWidth(50);
+        arrow.setHeight(25);
+        arrow.setX(80);
+        arrow.setY(15);
+        needMoreMoneyDisplay.addActor(arrow);
+
+        Label complaint = new Label("You need\nmore points!", uiSkin);
+        needMoreMoneyDisplay.addActor(complaint);
+
+        needMoreMoneyDisplay.setVisible(false);
+    }
+
     private void buyStuffFor(Cell c) {
         if (simulator.isSimulating()) {
+            showCurrentlySimulatingError();
             return;
         }
         CellContentType selectedType = shop.getSelectedCellType();
         if (simulator.getPlayerBuildPoints() >= selectedType.getCost()) {
             c.setCellContent(selectedType.instantiate(r));
             simulator.reducePlayerBuildPointsBy(selectedType.getCost());
+        } else {
+            needMoreMoneyDisplay.addAction(
+                    Actions.sequence(
+                            Actions.moveTo(250, 400),
+                            Actions.visible(true),
+                            Actions.moveBy(25, 0, 0.25f),
+                            Actions.delay(0.25f),
+                            Actions.visible(false),
+                            Actions.moveBy(-25, 0)
+                    )
+            );
         }
     }
 
