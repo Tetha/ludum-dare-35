@@ -60,7 +60,13 @@ public class GrowingBlobGame extends ApplicationAdapter {
         buildPointDisplay.setY(400);
         buildPointDisplay.setHeight(50);
         buildPointDisplay.setWidth(150);
-        buildPointDisplay.setDebug(true);
+
+        ScoreDisplay display = new ScoreDisplay(uiSkin, simulator::getPlayerScore, 50, 100, 200);
+        display.setX(550);
+        display.setY(400);
+        display.setWidth(100);
+        display.setHeight(50);
+        stage.addActor(display);
 
         skipButton = new TextButton("Simulate", uiSkin);
         stage.addActor(skipButton);
