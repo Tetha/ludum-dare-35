@@ -10,6 +10,8 @@ public class Cell {
     private Runnable energyTransferTowardsLeftObserver;
     private Runnable energyTransferTowardsDownObserver;
     private Runnable energyTransferTowardsUpObserver;
+    private Runnable scoreGeneratedObserver;
+    private Runnable buildPointGainedObserver;
 
     public void setCellContent(CellContent newContent) {
         if (this.cellContent != null) {
@@ -82,4 +84,19 @@ public class Cell {
         }
     }
 
+    public void setScoreGeneratedObserver(Runnable scoreGeneratedObserver) {
+        this.scoreGeneratedObserver = scoreGeneratedObserver;
+    }
+
+    public void setBuildPointGainedObserver(Runnable buildPointGainedObserver) {
+        this.buildPointGainedObserver = buildPointGainedObserver;
+    }
+
+    protected void notifyScoreProduced() {
+        if (this.buildPointGainedObserver != null) this.buildPointGainedObserver.run();
+    }
+
+    protected void notifyBuildPointProduced() {
+        if (this.buildPointGainedObserver != null) this.buildPointGainedObserver.run();
+    }
 }

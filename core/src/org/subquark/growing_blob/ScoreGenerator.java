@@ -13,7 +13,7 @@ public class ScoreGenerator extends CellContent {
             return;
         }
 
-        for (int i = getEnergy(); i >= 0; i--) notifyScoreProduced();
+        for (int i = getEnergy(); i > 0; i--) notifyScoreProduced();
         getCell().getWorld().addPlayerScore(this.getEnergy());
         this.setEnergy(0);
     }

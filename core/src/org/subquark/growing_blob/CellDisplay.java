@@ -1,5 +1,6 @@
 package org.subquark.growing_blob;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -28,6 +29,8 @@ public class CellDisplay extends Group {
         this.cell.onEnergyTransferredTowardsLeft(this::onEnergyTransferTowardsLeft);
         this.cell.onEnergyTransferredTowardsDown(this::onEnergyTransferTowardsDown);
         this.cell.onEnergyTransferredTowardsUp(this::onEnergyTransferTowardsUp);
+        this.cell.setScoreGeneratedObserver(this::onScoreProduced);
+        this.cell.setBuildPointGainedObserver(this::onBuildPointProduced);
 
         background = new CellBackgroundDisplay(cell);
         background.setWidth(50);
@@ -108,6 +111,50 @@ public class CellDisplay extends Group {
         ));
         energyBullet.setZIndex(0);
         addActor(energyBullet);
+    }
+
+    public void onScoreProduced() {
+        PlusSign particle = new PlusSign();
+
+        float startX = r.nextFloat()*getWidth();
+        float startY = r.nextFloat()*getHeight();
+
+        float height = r.nextFloat() * 40;
+
+        particle.setColor(Color.YELLOW);
+        particle.setX(startX);
+        particle.setY(startY);
+        particle.setWidth(10);
+        particle.setHeight(10);
+
+        this.addActor(particle);
+
+        particle.addAction(sequence(
+            Actions.moveBy(0, height, 0.5f),
+                Actions.removeActor()
+        ));
+    }
+
+    public void onBuildPointProduced() {
+        PlusSign particle = new PlusSign();
+
+        float startX = r.nextFloat()*getWidth();
+        float startY = r.nextFloat()*getHeight();
+
+        float height = r.nextFloat() * 40;
+
+        particle.setColor(Color.RED);
+        particle.setX(startX);
+        particle.setY(startY);
+        particle.setWidth(10);
+        particle.setHeight(10);
+
+        this.addActor(particle);
+
+        particle.addAction(sequence(
+                Actions.moveBy(0, height, 0.5f),
+                Actions.removeActor()
+        ));
     }
 
     private int getEnergyInCell() {
