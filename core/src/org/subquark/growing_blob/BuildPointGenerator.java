@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class BuildPointGenerator extends CellContent {
-    protected BuildPointGenerator() {
+    protected BuildPointGenerator(Random r) {
         super(CellContentType.BUILD_POINT_GENERATOR);
     }
 

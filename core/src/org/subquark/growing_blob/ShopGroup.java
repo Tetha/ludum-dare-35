@@ -38,10 +38,14 @@ public class ShopGroup extends Group {
     public void act (float delta) {
         super.act(delta);
 
-        int selectedTypeIndex = items.getSelectedIndex();
-        CellContentType selectedType = CellContentType.values()[selectedTypeIndex];
+        CellContentType selectedType = getSelectedCellType();
 
         cost.setText("Cost: " + selectedType.getCost());
         description.setText(selectedType.getDescription());
+    }
+
+    public CellContentType getSelectedCellType() {
+        int selectedTypeIndex = items.getSelectedIndex();
+        return CellContentType.values()[selectedTypeIndex];
     }
 }
