@@ -16,16 +16,28 @@ public class World {
 
     private int playerBuildPoints = 0;
 
+    private boolean isSimulating;
+
     public void simulateTurn() {
         if (callbacksSubmitted != 0) {
             System.err.println("Something weird is going on - callbacksSubmitted should be 0, but is " + callbacksSubmitted);
             callbacksSubmitted = 0;
         }
 
+        isSimulating = true;
+
         handleLeftEmitters();
         handleRightEmitters();
         handleTopEmitters();
         handleBottomEmitters();
+    }
+
+    public boolean isSimulating() {
+        return isSimulating;
+    }
+
+    private void finishSimulating() {
+        isSimulating = false;
     }
 
     private void handleLeftEmitters() {
@@ -67,6 +79,7 @@ public class World {
                     public void run() {
                         tickCells();
                         commitAllCells();
+                        finishSimulating();
                     }
                 }, 2f);
             }
@@ -110,7 +123,7 @@ public class World {
             if (collidedCol == -1) {
                 emitter.fireBullet(0, 6, () -> {});
             } else {
-                emitter.fireBullet(0, collidedCol, onCellCollision(emitter.getLevel(), row, collidedCol));
+                emitter.fireBullet(0, 6 - collidedCol, onCellCollision(emitter.getLevel(), row, collidedCol));
             }
         }
     }
@@ -133,7 +146,7 @@ public class World {
             if (collidedRow == -1) {
                 emitter.fireBullet(6, 0, () -> {});
             } else {
-                emitter.fireBullet(collidedRow, 0, onCellCollision(emitter.getLevel(), collidedRow, col));
+                emitter.fireBullet(6 - collidedRow, 0, onCellCollision(emitter.getLevel(), collidedRow, col));
             }
         }
     }

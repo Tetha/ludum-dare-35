@@ -77,7 +77,7 @@ public class EmitterDisplayFacingLeft extends AbstractEmitterDisplay {
 
             Vector2 localBulletCoordinates = new Vector2(fireX, centerOfSecondBarrel);
             Vector2 parentCoords = localToParentCoordinates(localBulletCoordinates);
-            Vector2 targetCoords = localToParentCoordinates(new Vector2(-50 * columnsTravelled + 45, centerOfSecondBarrel));
+            Vector2 targetCoords = localToParentCoordinates(new Vector2(-50 * columnsTravelled +45, centerOfSecondBarrel));
 
             BulletDisplay newBullet = BulletDisplay.centeredAt(parentCoords.x, parentCoords.y, emitter.getColor());
             getParent().addActor(newBullet);
@@ -92,7 +92,7 @@ public class EmitterDisplayFacingLeft extends AbstractEmitterDisplay {
             Vector2 localBulletCoordinates = new Vector2(fireX, centerOfThirdBarrel);
             Vector2 parentCoords = localToParentCoordinates(localBulletCoordinates);
 
-            Vector2 targetCoords = localToParentCoordinates(new Vector2(-50 * columnsTravelled + 45, centerOfThirdBarrel));
+            Vector2 targetCoords = localToParentCoordinates(new Vector2(-50 * columnsTravelled +45, centerOfThirdBarrel));
 
             BulletDisplay newBullet = BulletDisplay.centeredAt(parentCoords.x, parentCoords.y, emitter.getColor());
             getParent().addActor(newBullet);

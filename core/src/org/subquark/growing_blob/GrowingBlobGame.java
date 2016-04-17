@@ -86,8 +86,12 @@ public class GrowingBlobGame extends ApplicationAdapter {
     }
 
     private void buyStuffFor(Cell c) {
+        if (simulator.isSimulating()) {
+            return;
+        }
         CellContentType selectedType = shop.getSelectedCellType();
         c.setCellContent(selectedType.instantiate(r));
+        simulator.simulateTurn();
     }
 
     private void createBottomEmitters(Random r) {
@@ -232,11 +236,5 @@ public class GrowingBlobGame extends ApplicationAdapter {
 
         stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
-
-        timeSinceFired += Gdx.graphics.getDeltaTime();
-        if (timeSinceFired > 10) {
-            simulator.simulateTurn();
-            timeSinceFired = 0;
-        }
 	}
 }
